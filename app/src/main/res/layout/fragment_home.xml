@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity"
+    tools:context=".ui.MainActivity"
     android:background="@drawable/home_background">
 
     <ImageView
@@ -28,12 +28,12 @@
         android:layout_width="300dp"
         android:layout_height="60dp"
         android:background="@drawable/title_rounded_corner"
+        android:elevation="10dp"
         android:fontFamily="@font/poppinsextrabold"
         android:paddingLeft="25dp"
         android:text="EzSail"
         android:textColor="#243642"
-        android:textSize="50sp"
-        android:elevation="10dp"/>
+        android:textSize="50sp" />
 
     <Button
         android:id="@+id/newCompBtn"

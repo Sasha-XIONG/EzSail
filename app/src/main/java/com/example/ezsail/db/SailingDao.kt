@@ -13,7 +13,7 @@ import com.example.ezsail.db.entities.Result
 
 @Dao
 interface SailingDao {
-
+    // Insert + Update
     @Insert(onConflict = OnConflictStrategy.REPLACE) // If the entry already existed, update
     suspend fun insertBoat(boat: Boat)
 
