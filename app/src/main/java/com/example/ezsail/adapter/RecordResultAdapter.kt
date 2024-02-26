@@ -1,7 +1,14 @@
 package com.example.ezsail.adapter
 
+import android.content.Context
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.example.ezsail.R
+import com.example.ezsail.databinding.CloseableTabBinding
 import java.util.concurrent.atomic.AtomicLong
 
 // Adapter for ViewPager2
@@ -34,12 +41,21 @@ class RecordResultAdapter(fragment: Fragment): FragmentStateAdapter(fragment) {
         return mAtomicLong.incrementAndGet()
     }
 
+    // Add new race
     fun addFragment(fragment: Fragment, title: String): RecordResultAdapter {
         fragment?.let { frag ->
             mFragmentList.add(frag)
             mTitleList.add(title)
             mIds.add(getAtomicGeneratedId())
         }
+        return this
+    }
+
+    // Delete race
+    fun deleteFragment(index: Int): RecordResultAdapter {
+        mFragmentList.removeAt(index)
+        mTitleList.removeAt(index)
+        mIds.removeAt(index)
         return this
     }
 

@@ -16,7 +16,6 @@ class RaceResultItemAdapter(private val raceResultList: List<ResultItem>):
         viewType: Int
     ): ResultItemHolder {
         val binding = ItemRaceResultBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-//        val v = LayoutInflater.from(parent.context).inflate(R.layout.item_race_result, parent, false)
         return ResultItemHolder(binding)
     }
 
