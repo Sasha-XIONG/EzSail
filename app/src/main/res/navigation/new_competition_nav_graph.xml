@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/new_competition_nav_graph"
+    app:startDestination="@id/setTitleFragment">
+    <fragment
+        android:id="@+id/setTitleFragment"
+        android:name="com.example.ezsail.ui.fragments.newcompetition.SetTitleFragment"
+        android:label="SetTitleFragment" >
+        <action
+            android:id="@+id/action_setTitleFragment_to_recordResultFragment"
+            app:destination="@id/recordResultFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/recordResultFragment"
+        android:name="com.example.ezsail.ui.fragments.newcompetition.RecordResultFragment"
+        android:label="RecordResultFragment" />
+</navigation>
