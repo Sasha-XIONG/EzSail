@@ -61,7 +61,7 @@
             android:layout_weight="1"
             android:fontFamily="@font/poppinssemibold"
             android:gravity="center"
-            android:text="Time"
+            android:text="Timer"
             android:textSize="16sp"
             android:textColor="#1D1B20"/>
 
@@ -70,8 +70,10 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:fontFamily="@font/poppinssemibold"
-            android:text=""
-            android:textSize="16sp" />
+            android:text="Pin on top"
+            android:textSize="16sp"
+            android:textColor="#1D1B20"
+            android:gravity="center"/>
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -82,5 +84,32 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+    <TextView
+        android:id="@+id/timer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="00:00:00"
+        android:fontFamily="@font/poppinssemibold"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/toggleBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/toggleBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="START!"
+        android:fontFamily="@font/poppinsbold"
+        android:textSize="15sp"
+        android:textColor="#1D1B20"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:layout_constraintVertical_bias="0.823"
+        android:backgroundTint="#D4DDEC"
+        android:elevation="4dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

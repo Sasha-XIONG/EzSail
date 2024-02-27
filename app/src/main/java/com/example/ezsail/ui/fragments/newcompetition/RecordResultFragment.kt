@@ -76,7 +76,9 @@ class RecordResultFragment: Fragment(R.layout.fragment_record_result) {
 
         // Setup addRace button
         binding.addRaceBtn.setOnClickListener {
-            mAdapter.addFragment(RaceResultListFragment.getInstance((mAdapter.itemCount).toString()), "R"+(mAdapter.itemCount).toString())
+            mAdapter.addFragment(
+                RaceResultListFragment.getInstance((mAdapter.itemCount).toString()),
+                "R"+(mAdapter.itemCount).toString())
             mAdapter.notifyDataSetChanged()
             binding.viewPager.setCurrentItem(mAdapter.itemCount, true)
         }

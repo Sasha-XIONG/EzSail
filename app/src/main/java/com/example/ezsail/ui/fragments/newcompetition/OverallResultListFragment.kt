@@ -5,8 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ezsail.OverallItem
+import com.example.ezsail.R
 import com.example.ezsail.adapter.OverallResultItemAdapter
 import com.example.ezsail.adapter.RaceResultItemAdapter
 import com.example.ezsail.databinding.FragmentOverallResultBinding
@@ -59,5 +61,10 @@ class OverallResultListFragment: Fragment() {
         // TEST!!
         adapter = OverallResultItemAdapter(results)
         binding.recyclerView.adapter = adapter
+
+        // Set onClickListener for add competitor button
+        binding.addBtn.setOnClickListener {
+            findNavController().navigate(R.id.action_recordResultFragment_to_addCompetitorFragment)
+        }
     }
 }

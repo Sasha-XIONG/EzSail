@@ -3,6 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/new_competition_nav_graph"
     app:startDestination="@id/setTitleFragment">
+
+    <action android:id="@+id/action_global_recordResultFragment"
+        app:destination="@+id/recordResultFragment"
+        app:launchSingleTop="true" />
+
     <fragment
         android:id="@+id/setTitleFragment"
         android:name="com.example.ezsail.ui.fragments.newcompetition.SetTitleFragment"
@@ -14,5 +19,17 @@
     <fragment
         android:id="@+id/recordResultFragment"
         android:name="com.example.ezsail.ui.fragments.newcompetition.RecordResultFragment"
-        android:label="RecordResultFragment" />
+        android:label="RecordResultFragment" >
+        <action
+            android:id="@+id/action_recordResultFragment_to_addCompetitorFragment"
+            app:destination="@id/addCompetitorFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addCompetitorFragment"
+        android:name="com.example.ezsail.ui.fragments.newcompetition.AddCompetitorFragment"
+        android:label="AddCompetitorFragment" >
+        <action
+            android:id="@+id/action_addCompetitorFragment_to_recordResultFragment"
+            app:destination="@id/recordResultFragment" />
+    </fragment>
 </navigation>

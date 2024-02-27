@@ -1,72 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <View
         android:id="@+id/divider"
-        android:layout_width="395dp"
+        android:layout_width="0dp"
         android:layout_height="1dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="5dp"
         android:background="#CAC4D0"
+        app:layout_constraintBottom_toTopOf="@+id/item"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/item"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:id="@+id/item"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="8dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/divider">
 
         <TextView
             android:id="@+id/boatClass"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:text="a"
-            android:fontFamily="@font/robotoregular"
-            android:textSize="16sp"
-            android:textColor="#1D1B20"
             android:layout_weight="1"
-            android:gravity="center"/>
+            android:fontFamily="@font/robotoregular"
+            android:gravity="center"
+            android:text="a"
+            android:textColor="#1D1B20"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/sailNumber"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:text="123"
-            android:fontFamily="@font/robotoregular"
-            android:textSize="16sp"
-            android:textColor="#1D1B20"
             android:layout_weight="1"
-            android:gravity="center"/>
+            android:fontFamily="@font/robotoregular"
+            android:gravity="center"
+            android:text="123"
+            android:textColor="#1D1B20"
+            android:textSize="16sp" />
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:gravity="center">
 
             <TextView
                 android:id="@+id/laps"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="123"
                 android:fontFamily="@font/robotoregular"
-                android:textSize="16sp"
+                android:gravity="center"
+                android:text="123"
                 android:textColor="#1D1B20"
-                android:gravity="center"/>
+                android:textSize="16sp" />
 
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/baseline_add_24"
                 android:background="@android:color/transparent"
-                android:gravity="center"/>
+                android:gravity="center"
+                android:src="@drawable/baseline_add_24" />
 
         </LinearLayout>
 
@@ -74,28 +79,35 @@
             android:id="@+id/code"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:spinnerMode="dropdown"
+            android:gravity="center"
             android:layout_weight="1"
-            android:gravity="end"
-            android:paddingEnd="0dp" />
+            android:paddingEnd="0dp"
+            android:spinnerMode="dropdown" />
 
-        <Button
+        <ImageButton
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="30dp"
+            android:gravity="center"
             android:layout_weight="1"
-            android:backgroundTint="#18C0C1"
-            android:text="Finish"
-            android:textSize="12sp"
-            android:layout_gravity="center"
-            android:fontFamily="@font/robotoregular"/>
+            android:background="@drawable/timer_bg"
+            android:src="@drawable/img_clock" />
 
         <ImageButton
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
+            android:gravity="center"
             android:layout_weight="1"
             android:background="@android:color/transparent"
             android:src="@drawable/img_unpin" />
+        <!--        <Button-->
+        <!--            android:id="@+id/saveBtn"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="match_parent"-->
+        <!--            android:layout_weight="1"-->
+        <!--            android:background="@android:color/transparent"-->
+        <!--            android:drawableTop="@drawable/img_save"-->
+        <!--            android:text="Save"-->
+        <!--            android:textColor="#000000" />-->
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

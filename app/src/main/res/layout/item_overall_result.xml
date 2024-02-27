@@ -6,66 +6,71 @@
 
     <View
         android:id="@+id/divider"
-        android:layout_width="395dp"
+        android:layout_width="0dp"
         android:layout_height="1dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
         android:background="#CAC4D0"
+        app:layout_constraintBottom_toTopOf="@+id/item"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/item"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:id="@+id/item"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="5dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/divider">
 
         <TextView
             android:id="@+id/boatClass"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:text="a"
-            android:fontFamily="@font/robotoregular"
-            android:textSize="16sp"
-            android:textColor="#1D1B20"
             android:layout_weight="1"
-            android:gravity="center"/>
+            android:fontFamily="@font/robotoregular"
+            android:gravity="center"
+            android:text="a"
+            android:textColor="#1D1B20"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/sailNumber"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:text="123"
-            android:fontFamily="@font/robotoregular"
-            android:textSize="16sp"
-            android:textColor="#1D1B20"
             android:layout_weight="1"
-            android:gravity="center"/>
+            android:fontFamily="@font/robotoregular"
+            android:gravity="center"
+            android:text="123"
+            android:textColor="#1D1B20"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/nett"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:text="4"
-            android:fontFamily="@font/robotoregular"
-            android:textSize="16sp"
-            android:textColor="#1D1B20"
             android:layout_weight="1"
-            android:gravity="center"/>
+            android:fontFamily="@font/robotoregular"
+            android:gravity="center"
+            android:text="4"
+            android:textColor="#1D1B20"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/rank"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:text="1"
-            android:fontFamily="@font/robotoregular"
-            android:textSize="16sp"
-            android:textColor="#1D1B20"
             android:layout_weight="1"
-            android:gravity="center"/>
+            android:fontFamily="@font/robotoregular"
+            android:gravity="center"
+            android:text="1"
+            android:textColor="#1D1B20"
+            android:textSize="16sp" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
