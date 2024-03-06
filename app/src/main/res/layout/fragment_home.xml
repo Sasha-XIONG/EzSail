@@ -21,7 +21,7 @@
         android:fontFamily="@font/poppinssemibold"
         android:paddingLeft="25dp"
         android:text="Welcome To"
-        android:textColor="#243642"
+        android:textColor="@color/white"
         android:textSize="40sp" />
 
     <TextView
@@ -36,7 +36,7 @@
         android:textSize="50sp" />
 
     <Button
-        android:id="@+id/newCompBtn"
+        android:id="@+id/newSeriesBtn"
         android:stateListAnimator="@null"
         android:elevation="10dp"
         android:layout_width="260dp"
@@ -45,11 +45,11 @@
         android:layout_gravity="center_horizontal"
         android:backgroundTint="#3CACAD"
         android:fontFamily="@font/poppinsmedium"
-        android:text="New Competition"
+        android:text="New Series"
         android:textSize="20sp" />
 
     <Button
-        android:id="@+id/allCompBtn"
+        android:id="@+id/allSeriesBtn"
         android:stateListAnimator="@null"
         android:elevation="10dp"
         android:layout_width="260dp"
@@ -58,7 +58,7 @@
         android:layout_gravity="center_horizontal"
         android:backgroundTint="#233440"
         android:fontFamily="@font/poppinsmedium"
-        android:text="All Competitions"
+        android:text="All Series"
         android:textSize="20sp" />
 
 </LinearLayout>

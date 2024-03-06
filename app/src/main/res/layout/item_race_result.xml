@@ -67,6 +67,7 @@
                 android:textSize="16sp" />
 
             <ImageButton
+                android:id="@+id/addLapBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:background="@android:color/transparent"
@@ -75,14 +76,16 @@
 
         </LinearLayout>
 
-        <Spinner
+        <TextView
             android:id="@+id/code"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:gravity="center"
             android:layout_weight="1"
-            android:paddingEnd="0dp"
-            android:spinnerMode="dropdown" />
+            android:text="OOD"
+            android:fontFamily="@font/robotoregular"
+            android:textSize="16sp"
+            android:textColor="#1D1B20"/>
 
         <ImageButton
             android:layout_width="0dp"
@@ -99,15 +102,6 @@
             android:layout_weight="1"
             android:background="@android:color/transparent"
             android:src="@drawable/img_unpin" />
-        <!--        <Button-->
-        <!--            android:id="@+id/saveBtn"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="match_parent"-->
-        <!--            android:layout_weight="1"-->
-        <!--            android:background="@android:color/transparent"-->
-        <!--            android:drawableTop="@drawable/img_save"-->
-        <!--            android:text="Save"-->
-        <!--            android:textColor="#000000" />-->
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

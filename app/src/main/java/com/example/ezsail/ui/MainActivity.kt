@@ -3,17 +3,27 @@ package com.example.ezsail.ui
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
-import androidx.navigation.findNavController
+import android.widget.EditText
+import androidx.activity.viewModels
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.example.ezsail.Constants.ACTION_SHOW_RECORD_FRAGMENT
 import com.example.ezsail.R
 import com.example.ezsail.databinding.ActivityNewCompetitionBinding
+import com.example.ezsail.ui.viewmodels.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+
+    // Dagger manages viewmodel factories
+    // TODO: correct view model needed
+    private val viewModel: MainViewModel by viewModels()
 
     private lateinit var binding: ActivityNewCompetitionBinding
     lateinit var navHostFragment: NavHostFragment
@@ -35,24 +45,14 @@ class MainActivity : AppCompatActivity() {
         navHostFragment.findNavController()
             .addOnDestinationChangedListener { _, destination, _ ->
                 when (destination.id) {
-                    R.id.setTitleFragment -> {binding.toolbar.visibility = View.GONE
+                    R.id.allSeriesFragment, R.id.homeFragment, R.id.setTitleFragment ->
+                    {binding.toolbar.visibility = View.GONE
                         binding.bottomToolbar.visibility = View.GONE}
                     R.id.addCompetitorFragment -> {binding.bottomToolbar.visibility = View.GONE}
                     else -> {binding.toolbar.visibility = View.VISIBLE
                     binding.bottomToolbar.visibility = View.VISIBLE}
                 }
             }
-//        // test database
-//        val boats = listOf(
-//            Boat("1234", "LASER", "Joe Goff", "", "bala", "handiclap"),
-//            Boat("2213", "LASER", "Jack Chicken", "aa", "bala", "handiclap"),
-//            Boat("23-111", "SOLAR", "Mike Harper", "", "bala", "handiclap"),
-//            Boat("2222", "SOLAR", "Mike Harper", "", "bala", "handiclap")
-//        )
-//
-//        lifecycleScope.launch {
-//            boats.forEach { dao.insertBoat(it) }
-//        }
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -64,8 +64,12 @@ class MainActivity : AppCompatActivity() {
     // Check if the activity is launched by clicking notification
     private fun navigateToRaceFragment(intent: Intent?) {
         if (intent?.action == ACTION_SHOW_RECORD_FRAGMENT) {
-            navHostFragment.findNavController().navigate(R.id.action_global_recordResultFragment)
+            navHostFragment.findNavController().navigate(R.id.global_action_seriesFragment)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
     }
 }
 
