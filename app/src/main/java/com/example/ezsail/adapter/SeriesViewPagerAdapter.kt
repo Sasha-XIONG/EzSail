@@ -1,7 +1,11 @@
 package com.example.ezsail.adapter
 
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.recyclerview.widget.DiffUtil
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.example.ezsail.db.entities.Race
+import com.example.ezsail.ui.fragments.RaceResultListFragment
 import java.util.concurrent.atomic.AtomicLong
 
 // Adapter for ViewPager2
@@ -44,14 +48,23 @@ class SeriesViewPagerAdapter(fragment: Fragment): FragmentStateAdapter(fragment)
     }
 
     // Delete race
-    fun deleteFragment(index: Int): SeriesViewPagerAdapter {
+    fun deleteFragment(index: Int): Pair<SeriesViewPagerAdapter, RaceResultListFragment> {
+        val removeFragment = mFragmentList[index] as RaceResultListFragment
         mFragmentList.removeAt(index)
         mTitleList.removeAt(index)
         mIds.removeAt(index)
-        return this
+        return Pair(this, removeFragment)
     }
 
     fun getPageTitle(position: Int): CharSequence {
         return mTitleList.get(position)
+    }
+
+    fun getLastFragment(): RaceResultListFragment? {
+        if (mFragmentList.size == 1) {
+            return null
+        } else {
+            return mFragmentList.last() as RaceResultListFragment
+        }
     }
 }

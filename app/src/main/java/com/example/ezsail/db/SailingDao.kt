@@ -37,6 +37,9 @@ interface SailingDao {
     @Query("SELECT * FROM series ORDER BY id DESC")
     fun getAllSeries(): LiveData<List<Series>>
 
+    @Query("SELECT * FROM race WHERE seriesId = :id ORDER BY raceNo")
+    suspend fun getAllRacesBySeriesId(id: Int): List<Race>?
+
     @Query("SELECT * FROM overall_results ORDER BY nett")
     fun getAllOverallResult(): LiveData<List<OverallResult>>
 
@@ -45,6 +48,11 @@ interface SailingDao {
 
     @Delete
     suspend fun deleteSeries(series: Series)
+
+//    @Query("DELETE FROM race WHERE seriesId = :id AND raceNo = :raceNo")
+//    suspend fun deleteRaceBySeriesIdAndRaceNo(id: Int, raceNo: Int)
+    @Delete
+    suspend fun deleteRace(race: Race)
 
     @Query("SELECT * FROM series WHERE id = :id")
     suspend fun getSeriesById(id: Int?): Series?

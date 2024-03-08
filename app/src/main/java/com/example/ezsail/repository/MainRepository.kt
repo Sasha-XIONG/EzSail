@@ -26,11 +26,16 @@ class MainRepository @Inject constructor(
 //
     fun getAllSeries() = sailingDao.getAllSeries()
 
+    suspend fun getAllRacesBySeriesId(id: Int) = sailingDao.getAllRacesBySeriesId(id)
+
     fun searchSeries(query: String?) = sailingDao.searchSeriesByTitle(query)
 
     fun getAllOverallResults() = sailingDao.getAllOverallResult()
 
     suspend fun deleteSeries(series: Series) = sailingDao.deleteSeries(series)
+
+//    suspend fun deleteRace(id: Int, raceNo: Int) = sailingDao.deleteRaceBySeriesIdAndRaceNo(id, raceNo)
+    suspend fun deleteRace(race: Race) = sailingDao.deleteRace(race)
 
     suspend fun getSeriesById(id: Int?) = sailingDao.getSeriesById(id)
 //

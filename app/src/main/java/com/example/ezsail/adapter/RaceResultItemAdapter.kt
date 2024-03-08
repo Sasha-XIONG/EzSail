@@ -7,10 +7,13 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ezsail.databinding.ItemRaceResultBinding
 import com.example.ezsail.db.entities.relations.RaceResultsWithBoat
+import com.example.ezsail.listeners.RaceResultEventListener
 
 // Adapter for RecyclerView in the ViewPager
-class RaceResultItemAdapter():
+class RaceResultItemAdapter(listener: RaceResultEventListener):
     RecyclerView.Adapter<RaceResultItemAdapter.RaceResultViewHolder>() {
+
+    val listener = listener
 
     class RaceResultViewHolder(val itemBinding: ItemRaceResultBinding):
         RecyclerView.ViewHolder(itemBinding.root)
@@ -44,5 +47,13 @@ class RaceResultItemAdapter():
         holder.itemBinding.boatClass.text = currentRaceResult.boat.boatClass
         holder.itemBinding.laps.text = currentRaceResult.raceResult.laps.toString()
         holder.itemBinding.code.text = null
+
+        holder.itemBinding.addLapBtn.setOnClickListener {
+            listener.onAddLaps(currentRaceResult.raceResult)
+        }
+
+        holder.itemBinding.finishBtn.setOnClickListener {
+            listener.onFinish(currentRaceResult.raceResult)
+        }
     }
 }

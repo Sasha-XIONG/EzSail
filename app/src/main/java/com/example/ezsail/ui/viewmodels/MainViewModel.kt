@@ -1,12 +1,13 @@
 package com.example.ezsail.ui.viewmodels
 
+import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ezsail.db.entities.Boat
 import com.example.ezsail.db.entities.OverallResult
 import com.example.ezsail.db.entities.Race
 import com.example.ezsail.db.entities.RaceResult
-//import com.example.ezsail.db.entities.RaceResult
 import com.example.ezsail.db.entities.Series
 import com.example.ezsail.repository.MainRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,11 +22,6 @@ class MainViewModel @Inject constructor(
     var numberOfRaces = 0
     var currentPage = 0
     lateinit var currentSeries: Series
-    lateinit var currentRace: Race
-
-    fun getAllSeries() = mainRepository.getAllSeries()
-
-    fun searchSeries(query: String?) = mainRepository.searchSeries(query)
 
     fun upsertBoat(boat: Boat) = viewModelScope.launch {
         mainRepository.upsertBoat(boat)
@@ -43,8 +39,8 @@ class MainViewModel @Inject constructor(
         mainRepository.upsertOverallResult(overallResult)
     }
 
-    fun upsertRaceResult(raceResult: RaceResult, raceState: Boolean) = viewModelScope.launch {
-        if(raceState) {
+    fun upsertRaceResult(raceResult: RaceResult, isOngoing: Boolean) = viewModelScope.launch {
+        if(isOngoing) {
             mainRepository.upsertRaceResult(raceResult)
         } else {
             raceResult.code = "DNC"
@@ -52,8 +48,28 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    fun getAllSeries() = mainRepository.getAllSeries()
+
+    fun searchSeries(query: String?) = mainRepository.searchSeries(query)
+
+//    suspend fun getAllRacesOfSeries(): List<Race>? {
+//        val raceList = viewModelScope.async {
+//            mainRepository.getAllRacesBySeriesId(currentSeries.id)
+//        }
+//        return raceList.await()
+//    }
+    suspend fun getAllRacesOfSeries(): List<Race>? =
+        mainRepository.getAllRacesBySeriesId(currentSeries.id)
+
     fun deleteSeries(series: Series) = viewModelScope.launch {
         mainRepository.deleteSeries(series)
+    }
+
+//    fun deleteRace(raceNo: Int) = viewModelScope.launch {
+//        mainRepository.deleteRace(currentSeries.id, raceNo)
+//    }
+    fun deleteRace(race: Race) = viewModelScope.launch {
+        mainRepository.deleteRace(race)
     }
 
 //    fun getSeries(id: Int?) = viewModelScope.launch {
@@ -71,9 +87,10 @@ class MainViewModel @Inject constructor(
 //    }
 
     //TEST!!
-    fun getAllOverallResultsOfCurrentSeries() = mainRepository.getAllOverallResultsBySeriesId(currentSeries.id)
+    fun getAllOverallResultsOfCurrentSeries() =
+        mainRepository.getAllOverallResultsBySeriesId(currentSeries.id)
 
-    fun getAllRaceResultsOfCurrentSeriesAndCurrentRace() =
-        mainRepository.getAllRaceResultsBySeriesIdAndRaceNo(currentSeries.id, 1)
+    fun getAllRaceResultsOfCurrentSeriesAndCurrentRace(raceNo: Int) =
+        mainRepository.getAllRaceResultsBySeriesIdAndRaceNo(currentSeries.id, raceNo)
 
 }
