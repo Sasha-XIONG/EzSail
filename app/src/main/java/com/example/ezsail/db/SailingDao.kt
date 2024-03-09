@@ -3,8 +3,11 @@ package com.example.ezsail.db
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
+import androidx.room.Update
 import androidx.room.Upsert
 import com.example.ezsail.db.entities.Boat
 import com.example.ezsail.db.entities.OverallResult
@@ -31,8 +34,14 @@ interface SailingDao {
     @Upsert
     suspend fun upsertOverallResult(overallResult: OverallResult)
 
-    @Upsert
-    suspend fun upsertRaceResult(raceResult: RaceResult)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertRaceResult(raceResult: RaceResult)
+
+    @Update
+    suspend fun updateRaceResult(raceResult: RaceResult)
+
+    @Delete
+    suspend fun deleteRaceResult(raceResult: RaceResult)
 
     @Query("SELECT * FROM series ORDER BY id DESC")
     fun getAllSeries(): LiveData<List<Series>>

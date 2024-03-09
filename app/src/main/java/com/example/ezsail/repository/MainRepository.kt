@@ -20,7 +20,11 @@ class MainRepository @Inject constructor(
 
     suspend fun upsertOverallResult(overallResult: OverallResult) = sailingDao.upsertOverallResult(overallResult)
 
-    suspend fun upsertRaceResult(raceResult: RaceResult) = sailingDao.upsertRaceResult(raceResult)
+    suspend fun insertRaceResult(raceResult: RaceResult) = sailingDao.insertRaceResult(raceResult)
+
+    suspend fun updateRaceResult(raceResult: RaceResult) = sailingDao.updateRaceResult(raceResult)
+
+    suspend fun deleteRaceResult(raceResult: RaceResult) = sailingDao.deleteRaceResult(raceResult)
 
 //    suspend fun insertRaceResult(raceResult: RaceResult) = sailingDao.insertRaceResult(raceResult)
 //

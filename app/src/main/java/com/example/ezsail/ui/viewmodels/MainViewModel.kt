@@ -39,13 +39,21 @@ class MainViewModel @Inject constructor(
         mainRepository.upsertOverallResult(overallResult)
     }
 
-    fun upsertRaceResult(raceResult: RaceResult, isOngoing: Boolean) = viewModelScope.launch {
+    fun insertRaceResult(raceResult: RaceResult, isOngoing: Boolean) = viewModelScope.launch {
         if(isOngoing) {
-            mainRepository.upsertRaceResult(raceResult)
+            mainRepository.insertRaceResult(raceResult)
         } else {
             raceResult.code = "DNC"
-            mainRepository.upsertRaceResult(raceResult)
+            mainRepository.insertRaceResult(raceResult)
         }
+    }
+
+    fun updateRaceResult(raceResult: RaceResult) = viewModelScope.launch {
+        mainRepository.updateRaceResult(raceResult)
+    }
+
+    fun deleteRaceResult(raceResult: RaceResult) = viewModelScope.launch {
+        mainRepository.deleteRaceResult(raceResult)
     }
 
     fun getAllSeries() = mainRepository.getAllSeries()

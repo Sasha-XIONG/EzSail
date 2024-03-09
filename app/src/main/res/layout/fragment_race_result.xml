@@ -66,6 +66,7 @@
             android:textColor="#1D1B20"/>
 
         <TextView
+            android:id="@+id/pintv"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -89,8 +90,10 @@
         android:id="@+id/timer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="00:00"
+        android:layout_marginBottom="8dp"
+        android:background="#FEF7FF"
         android:fontFamily="@font/poppinssemibold"
+        android:text="00:00"
         android:textSize="25sp"
         app:layout_constraintBottom_toTopOf="@+id/toggleBtn"
         app:layout_constraintEnd_toEndOf="parent"
@@ -110,6 +113,7 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout"
         app:layout_constraintVertical_bias="0.823"
         android:backgroundTint="#D4DDEC"
+        android:stateListAnimator="@null"
         android:elevation="4dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

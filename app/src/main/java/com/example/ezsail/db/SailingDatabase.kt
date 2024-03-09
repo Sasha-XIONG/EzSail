@@ -1,15 +1,12 @@
 package com.example.ezsail.db
 
-import android.content.Context
 import androidx.room.Database
-import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.ezsail.db.entities.Boat
-import com.example.ezsail.db.entities.Competition
 import com.example.ezsail.db.entities.OverallResult
+import com.example.ezsail.db.entities.PYNumbers
 import com.example.ezsail.db.entities.Race
 import com.example.ezsail.db.entities.RaceResult
-import com.example.ezsail.db.entities.Result
 import com.example.ezsail.db.entities.Series
 
 @Database(
@@ -18,9 +15,10 @@ import com.example.ezsail.db.entities.Series
         Race::class,
         Series::class,
         OverallResult::class,
-        RaceResult::class
+        RaceResult::class,
+        PYNumbers::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract class SailingDatabase: RoomDatabase() {

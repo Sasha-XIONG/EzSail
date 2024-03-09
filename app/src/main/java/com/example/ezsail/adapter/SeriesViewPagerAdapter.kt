@@ -67,4 +67,8 @@ class SeriesViewPagerAdapter(fragment: Fragment): FragmentStateAdapter(fragment)
             return mFragmentList.last() as RaceResultListFragment
         }
     }
+
+    fun getFragment(index: Int): RaceResultListFragment {
+        return mFragmentList[index] as RaceResultListFragment
+    }
 }

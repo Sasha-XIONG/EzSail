@@ -59,15 +59,17 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
+                    android:id="@+id/tv_dateTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/robotoregular"
+                    android:fontFamily="@font/poppinsmedium"
                     android:text="Race Date" />
 
                 <TextView
+                    android:id="@+id/tv_raceDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/robotoregular"
+                    android:fontFamily="@font/poppinsmedium"
                     android:text="04/03/2024" />
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
