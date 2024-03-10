@@ -36,6 +36,12 @@ class MainRepository @Inject constructor(
 
     fun getAllOverallResults() = sailingDao.getAllOverallResult()
 
+    fun getAllBoatClass() = sailingDao.getAllBoatClass()
+
+    fun getAllSailNo() = sailingDao.getAllSailNo()
+
+    suspend fun getNumberByClass(boatClass: String) = sailingDao.getNumberByClass(boatClass)
+
     suspend fun deleteSeries(series: Series) = sailingDao.deleteSeries(series)
 
 //    suspend fun deleteRace(id: Int, raceNo: Int) = sailingDao.deleteRaceBySeriesIdAndRaceNo(id, raceNo)

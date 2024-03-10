@@ -69,6 +69,12 @@ class MainViewModel @Inject constructor(
     suspend fun getAllRacesOfSeries(): List<Race>? =
         mainRepository.getAllRacesBySeriesId(currentSeries.id)
 
+    fun getAllBoatClass() = mainRepository.getAllBoatClass()
+
+    fun getAllSailNo() = mainRepository.getAllSailNo()
+
+    suspend fun getNumberByClass(boatClass: String): Int = mainRepository.getNumberByClass(boatClass)
+
     fun deleteSeries(series: Series) = viewModelScope.launch {
         mainRepository.deleteSeries(series)
     }

@@ -27,6 +27,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.ui.graphics.Color
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.commit
 import com.example.ezsail.R
 import com.example.ezsail.db.entities.Race
 import com.example.ezsail.db.entities.RaceResult
@@ -51,6 +52,7 @@ class RaceResultListFragment(race: Race):
 
     private var isTimerEnabled = false
     private var currentTimeInMillis = 0L
+    private var raceResultList = listOf<RaceResultsWithBoat>()
 
     var race = race
 
@@ -86,24 +88,12 @@ class RaceResultListFragment(race: Race):
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Show race date
-//        requireActivity().findViewById<TextView>(R.id.tv_raceDate).apply {
-//            val calendar = Calendar.getInstance().apply {
-//                timeInMillis = race.timestamp
-//            }
-//            val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-//            visibility = View.VISIBLE
-//            text = dateFormat.format(calendar.time)
-//        }
-
         // Check state of race
         if (!race.is_ongoing) {
             binding.toggleBtn.visibility = View.GONE
             binding.timer.visibility = View.GONE
             binding.pintv.text = "Points"
         }
-
-        setupRaceResultRecyclerView()
 
         binding.toggleBtn.setOnClickListener {
             // Check notification permission
@@ -118,6 +108,9 @@ class RaceResultListFragment(race: Race):
             }
         }
 
+        // Setup adapter for recyclerview
+        setupRaceResultRecyclerView()
+
         // Update timer in real time
         subscribeToObservers()
     }
@@ -125,6 +118,11 @@ class RaceResultListFragment(race: Race):
     override fun onDestroy() {
         super.onDestroy()
         raceResultBinding = null
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Log.d("destroy frag", "yes")
     }
 
     // Send intent to service
@@ -145,6 +143,11 @@ class RaceResultListFragment(race: Race):
             // Update state of race
             race.is_ongoing = false
             viewModel.upsertRace(race)
+
+            // Update code for competitors did not finish
+            updateCode()
+
+            refreshFragment()
         } else {
             sendCommandToService(ACTION_START_SERVICE)
         }
@@ -160,15 +163,33 @@ class RaceResultListFragment(race: Race):
     }
 
     private fun subscribeToObservers() {
-        TimingService.isTimerEnabled.observe(viewLifecycleOwner, Observer {
+        TimingService.isTimerEnabled.observe(viewLifecycleOwner) {
             updateToggleBtn(it)
-        })
+        }
 
-        TimingService.timeRaceInMillis.observe(viewLifecycleOwner, Observer {
+        TimingService.timeRaceInMillis.observe(viewLifecycleOwner) {
             currentTimeInMillis = it
             val formattedTime = TimingUtility.getFormattedStopWatchTime(currentTimeInMillis)
             binding.timer.text = formattedTime
-        })
+        }
+
+        viewModel.getAllRaceResultsOfCurrentSeriesAndCurrentRace(race.raceNo).observe(viewLifecycleOwner) {
+            raceResultListAdapter.differ.submitList(it)
+            raceResultList = it
+        }
+
+        viewModel.getAllOverallResultsOfCurrentSeries().observe(viewLifecycleOwner) {
+            it.forEach {
+                viewModel.insertRaceResult(
+                    RaceResult(
+                        it.boat.sailNo,
+                        race.raceNo,
+                        it.overallResult.seriesId
+                    ),
+                    race.is_ongoing
+                )
+            }
+        }
     }
 
     private fun setupRaceResultRecyclerView() {
@@ -176,28 +197,6 @@ class RaceResultListFragment(race: Race):
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(requireActivity())
             adapter = raceResultListAdapter
-        }
-
-        activity?.let {
-            viewModel.getAllRaceResultsOfCurrentSeriesAndCurrentRace(race.raceNo).observe(viewLifecycleOwner) {raceResult ->
-                raceResultListAdapter.differ.submitList(raceResult)
-            }
-        }
-
-        // Sync race result page with overall result page every time race result page is activated
-        activity?.let {
-            viewModel.getAllOverallResultsOfCurrentSeries().observe(viewLifecycleOwner) {overallResult ->
-                overallResult.forEach {
-                    viewModel.insertRaceResult(
-                        RaceResult(
-                            it.boat.sailNo,
-                            race.raceNo,
-                            it.overallResult.seriesId
-                        ),
-                        race.is_ongoing
-                    )
-                }
-            }
         }
     }
 
@@ -237,5 +236,19 @@ class RaceResultListFragment(race: Race):
         }
 
         card.show()
+    }
+
+    private fun updateCode() {
+        raceResultList.forEach {
+            if (it.raceResult.code == null && it.raceResult.elapsedTime == null) {
+                it.raceResult.code = "DNF"
+                viewModel.updateRaceResult(it.raceResult)
+            }
+        }
+    }
+
+    private fun refreshFragment() {
+        binding.pintv.text = "Points"
+        raceResultListAdapter.notifyDataSetChanged()
     }
 }

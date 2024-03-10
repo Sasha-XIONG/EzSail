@@ -55,6 +55,15 @@ interface SailingDao {
     @Query("SELECT * FROM series WHERE title LIKE :title")
     fun searchSeriesByTitle(title: String?): LiveData<List<Series>>
 
+    @Query("SELECT ClassName FROM PYNumbers")
+    fun getAllBoatClass(): LiveData<List<String>>
+
+    @Query("SELECT sail_no FROM Boat")
+    fun getAllSailNo(): LiveData<List<String>>
+
+    @Query("SELECT Number FROM PYNumbers WHERE ClassName = :boatClass")
+    suspend fun getNumberByClass(boatClass: String): Int
+
     @Delete
     suspend fun deleteSeries(series: Series)
 

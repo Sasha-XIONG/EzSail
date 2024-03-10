@@ -1,10 +1,7 @@
 package com.example.ezsail.adapter
 
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.AsyncListDiffer
-import androidx.recyclerview.widget.DiffUtil
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.ezsail.db.entities.Race
 import com.example.ezsail.ui.fragments.RaceResultListFragment
 import java.util.concurrent.atomic.AtomicLong
 

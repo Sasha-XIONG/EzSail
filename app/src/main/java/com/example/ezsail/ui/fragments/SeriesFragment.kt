@@ -89,11 +89,11 @@ class SeriesFragment: Fragment(R.layout.fragment_series) {
 
         mAdapter = SeriesViewPagerAdapter(this)
 
-        // Initialise adapter for viewPager
-        binding.viewPager.adapter = mAdapter
-
-        // Enable turning page
-        binding.viewPager.registerOnPageChangeCallback(viewPagerChangeCallback)
+        // Initialise viewPager
+        binding.viewPager.apply {
+            adapter = mAdapter
+            registerOnPageChangeCallback(viewPagerChangeCallback)
+        }
 
         // Bind TabLayout with ViewPager
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
