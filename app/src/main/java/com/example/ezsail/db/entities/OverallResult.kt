@@ -31,5 +31,5 @@ data class OverallResult(
     @ColumnInfo(name = "series_id", index = true)
     val seriesId: Int
 ): Parcelable {
-    var nett: Int = 0
+    var nett: Float = 0f
 }

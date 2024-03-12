@@ -2,6 +2,7 @@ package com.example.ezsail.ui.fragments
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -77,7 +78,7 @@ class SeriesFragment: Fragment(R.layout.fragment_series) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        Log.d("ftag", "$tag")
 
         currentSeries = args.series!!
         viewModel.currentSeries = currentSeries

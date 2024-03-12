@@ -3,20 +3,29 @@ package com.example.ezsail.ui
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.widget.EditText
+import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.core.os.postDelayed
+import androidx.fragment.app.commit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.example.ezsail.Constants.ACTION_SHOW_RECORD_FRAGMENT
 import com.example.ezsail.R
 import com.example.ezsail.databinding.ActivityNewCompetitionBinding
+import com.example.ezsail.ui.fragments.AllSeriesFragmentDirections
 import com.example.ezsail.ui.viewmodels.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -53,6 +62,17 @@ class MainActivity : AppCompatActivity() {
                     binding.bottomToolbar.visibility = View.VISIBLE}
                 }
             }
+
+        binding.rescoreBtn.setOnClickListener {
+            binding.progressBar.visibility =View.VISIBLE
+            viewModel.rescore()
+            Handler(Looper.getMainLooper()).postDelayed({
+                refreshFragment()
+                binding.progressBar.visibility = View.GONE
+            }, 2000)
+
+            Toast.makeText(this, "Results Rescored", Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -70,6 +90,15 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+    }
+
+    private fun refreshFragment() {
+        val navController = navHostFragment.findNavController()
+        val currentSeries = viewModel.currentSeries
+
+        navController.popBackStack()
+        val direction = AllSeriesFragmentDirections.actionAllSeriesFragmentToSeriesFragment(currentSeries)
+        navController.navigate(direction)
     }
 }
 

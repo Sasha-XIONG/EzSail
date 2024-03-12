@@ -1,7 +1,7 @@
 package com.example.ezsail.listeners
 
 import com.example.ezsail.db.entities.RaceResult
-import com.example.ezsail.db.entities.relations.RaceResultsWithBoat
+import com.example.ezsail.db.entities.relations.RaceResultsWithBoatAndPYNumber
 
 interface RaceResultEventListener {
 
@@ -9,5 +9,7 @@ interface RaceResultEventListener {
 
     fun onFinish(raceResult: RaceResult)
 
-    fun onItemClick(raceResultsWithBoat: RaceResultsWithBoat)
+    fun onItemClick(raceResultsWithBoat: RaceResultsWithBoatAndPYNumber)
+
+    fun onCodeSelect(raceResult: RaceResult, code: Int)
 }

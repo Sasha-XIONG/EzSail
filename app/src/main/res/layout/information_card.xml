@@ -31,7 +31,10 @@
         android:textColor="@color/black"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="@+id/sailNo_content"
-        app:layout_constraintTop_toTopOf="@+id/boatClass" />
+        app:layout_constraintTop_toTopOf="@+id/boatClass"
+        android:scrollHorizontally="true"
+        android:ellipsize="end"
+        android:maxLines="1"/>
 
     <TextView
         android:id="@+id/sailNo"
@@ -197,29 +200,6 @@
         app:layout_constraintStart_toEndOf="@+id/textView17"
         app:layout_constraintTop_toTopOf="@+id/textView17" />
 
-    <TextView
-        android:id="@+id/textView19"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:fontFamily="@font/robotoregular"
-        android:text="Points:"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="@+id/boatClass"
-        app:layout_constraintTop_toBottomOf="@+id/textView17" />
-
-    <TextView
-        android:id="@+id/points"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/robotoregular"
-        android:text="1"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="@+id/correctedTime"
-        app:layout_constraintTop_toTopOf="@+id/textView19" />
-
     <Button
         android:id="@+id/editBtn"
         android:layout_width="wrap_content"
@@ -232,7 +212,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.924"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/points"
+        app:layout_constraintTop_toBottomOf="@+id/correctedTime"
         app:layout_constraintVertical_bias="0.0" />
 
     <Button

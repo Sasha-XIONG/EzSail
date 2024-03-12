@@ -31,7 +31,8 @@ import androidx.fragment.app.commit
 import com.example.ezsail.R
 import com.example.ezsail.db.entities.Race
 import com.example.ezsail.db.entities.RaceResult
-import com.example.ezsail.db.entities.relations.RaceResultsWithBoat
+//import com.example.ezsail.db.entities.relations.RaceResultsWithBoat
+import com.example.ezsail.db.entities.relations.RaceResultsWithBoatAndPYNumber
 import com.example.ezsail.listeners.RaceResultEventListener
 import com.example.ezsail.ui.viewmodels.MainViewModel
 import java.text.SimpleDateFormat
@@ -52,7 +53,7 @@ class RaceResultListFragment(race: Race):
 
     private var isTimerEnabled = false
     private var currentTimeInMillis = 0L
-    private var raceResultList = listOf<RaceResultsWithBoat>()
+    private var raceResultList = listOf<RaceResultsWithBoatAndPYNumber>()
 
     var race = race
 
@@ -193,7 +194,7 @@ class RaceResultListFragment(race: Race):
     }
 
     private fun setupRaceResultRecyclerView() {
-        raceResultListAdapter = RaceResultItemAdapter(this, race)
+        raceResultListAdapter = RaceResultItemAdapter(this, race, requireContext())
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(requireActivity())
             adapter = raceResultListAdapter
@@ -210,22 +211,26 @@ class RaceResultListFragment(race: Race):
         viewModel.updateRaceResult(raceResult)
     }
 
-    override fun onItemClick(raceResultsWithBoat: RaceResultsWithBoat) {
+    override fun onCodeSelect(raceResult: RaceResult, code: Int) {
+        raceResult.code = code
+        viewModel.updateRaceResult(raceResult)
+    }
+
+    override fun onItemClick(raceResultsWithBoat: RaceResultsWithBoatAndPYNumber) {
         // Init information card
         val card = Dialog(requireContext())
         card.requestWindowFeature(Window.FEATURE_NO_TITLE)
         card.setCancelable(true)
         card.setContentView(R.layout.information_card)
 
-        card.findViewById<TextView>(R.id.boatClass_content).text = raceResultsWithBoat.boat.boatClass
-        card.findViewById<TextView>(R.id.sailNo_content).text = raceResultsWithBoat.boat.sailNo
-        card.findViewById<TextView>(R.id.helm_content).text = raceResultsWithBoat.boat.helm
-        card.findViewById<TextView>(R.id.crew).text = raceResultsWithBoat.boat.crew
-        card.findViewById<TextView>(R.id.club).text = raceResultsWithBoat.boat.club
-        card.findViewById<TextView>(R.id.fleet).text = raceResultsWithBoat.boat.fleet
-        card.findViewById<TextView>(R.id.rating).text = "1000"
+        card.findViewById<TextView>(R.id.boatClass_content).text = raceResultsWithBoat.boatWithPYNumber.boat.boatClass
+        card.findViewById<TextView>(R.id.sailNo_content).text = raceResultsWithBoat.boatWithPYNumber.boat.sailNo
+        card.findViewById<TextView>(R.id.helm_content).text = raceResultsWithBoat.boatWithPYNumber.boat.helm
+        card.findViewById<TextView>(R.id.crew).text = raceResultsWithBoat.boatWithPYNumber.boat.crew
+        card.findViewById<TextView>(R.id.club).text = raceResultsWithBoat.boatWithPYNumber.boat.club
+        card.findViewById<TextView>(R.id.fleet).text = raceResultsWithBoat.boatWithPYNumber.boat.fleet
+        card.findViewById<TextView>(R.id.rating).text = raceResultsWithBoat.boatWithPYNumber.number.Number.toString()
         card.findViewById<TextView>(R.id.correctedTime).text = raceResultsWithBoat.raceResult.correctedTime.toString()
-        card.findViewById<TextView>(R.id.points).text = raceResultsWithBoat.raceResult.points.toString()
 
         card.findViewById<Button>(R.id.deleteBtn).setOnClickListener {
             Toast.makeText(context, "Result Deleted", Toast.LENGTH_SHORT).show()
@@ -240,8 +245,8 @@ class RaceResultListFragment(race: Race):
 
     private fun updateCode() {
         raceResultList.forEach {
-            if (it.raceResult.code == null && it.raceResult.elapsedTime == null) {
-                it.raceResult.code = "DNF"
+            if (it.raceResult.code == 0 && it.raceResult.elapsedTime == null) {
+                it.raceResult.code = 4
                 viewModel.updateRaceResult(it.raceResult)
             }
         }

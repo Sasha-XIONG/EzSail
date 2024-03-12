@@ -1,34 +1,42 @@
 package com.example.ezsail.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.example.ezsail.R
 import com.example.ezsail.databinding.ItemRaceResultBinding
 import com.example.ezsail.db.entities.Race
-import com.example.ezsail.db.entities.RaceResult
-import com.example.ezsail.db.entities.relations.RaceResultsWithBoat
+import com.example.ezsail.db.entities.relations.RaceResultsWithBoatAndPYNumber
 import com.example.ezsail.listeners.RaceResultEventListener
 
 // Adapter for RecyclerView in the ViewPager
-class RaceResultItemAdapter(listener: RaceResultEventListener, race: Race):
+class RaceResultItemAdapter(listener: RaceResultEventListener, val race: Race, val context: Context):
     RecyclerView.Adapter<RaceResultItemAdapter.RaceResultViewHolder>() {
 
-    val listener = listener
-    val race = race
+    private val listener = listener
+    // Adapter for spinner
+    private val arrayAdapter = ArrayAdapter.createFromResource(
+        context,
+        R.array.codes,
+        android.R.layout.simple_spinner_dropdown_item
+    )
 
     class RaceResultViewHolder(val itemBinding: ItemRaceResultBinding):
         RecyclerView.ViewHolder(itemBinding.root)
 
-    private val differCallback = object : DiffUtil.ItemCallback<RaceResultsWithBoat>(){
-        override fun areItemsTheSame(oldItem: RaceResultsWithBoat, newItem: RaceResultsWithBoat): Boolean {
-            return oldItem.boat == newItem.boat &&
+    private val differCallback = object : DiffUtil.ItemCallback<RaceResultsWithBoatAndPYNumber>(){
+        override fun areItemsTheSame(oldItem: RaceResultsWithBoatAndPYNumber, newItem: RaceResultsWithBoatAndPYNumber): Boolean {
+            return oldItem.boatWithPYNumber == newItem.boatWithPYNumber &&
                     oldItem.raceResult == newItem.raceResult
         }
 
-        override fun areContentsTheSame(oldItem: RaceResultsWithBoat, newItem: RaceResultsWithBoat): Boolean {
+        override fun areContentsTheSame(oldItem: RaceResultsWithBoatAndPYNumber, newItem: RaceResultsWithBoatAndPYNumber): Boolean {
             return oldItem == newItem
         }
 
@@ -48,15 +56,15 @@ class RaceResultItemAdapter(listener: RaceResultEventListener, race: Race):
         val currentRaceResult = differ.currentList[position]
 
         // Init race result item
-        holder.itemBinding.sailNumber.text = currentRaceResult.boat.sailNo
-        holder.itemBinding.boatClass.text = currentRaceResult.boat.boatClass
+        holder.itemBinding.sailNumber.text = currentRaceResult.boatWithPYNumber.boat.sailNo
+        holder.itemBinding.boatClass.text = currentRaceResult.boatWithPYNumber.boat.boatClass
         holder.itemBinding.laps.text = currentRaceResult.raceResult.laps.toString()
-        holder.itemBinding.code.text = currentRaceResult.raceResult.code
         // If race is not ongoing, show hide finish button and show elapsed time
         if (!race.is_ongoing) {
             holder.itemBinding.finishBtn.visibility = View.GONE
             holder.itemBinding.unpinBtn.visibility = View.GONE
             holder.itemBinding.pinBtn.visibility = View.GONE
+            holder.itemBinding.addLapBtn.visibility = View.GONE
             holder.itemBinding.points.apply {
                 visibility = View.VISIBLE
                 text = currentRaceResult.raceResult.points.toString()
@@ -64,6 +72,25 @@ class RaceResultItemAdapter(listener: RaceResultEventListener, race: Race):
             holder.itemBinding.elapsedTime.apply {
                 visibility = View.VISIBLE
                 text = currentRaceResult.raceResult.elapsedTime.toString()
+            }
+        }
+
+        holder.itemBinding.codeSpinner.apply {
+            adapter = arrayAdapter
+            setSelection(currentRaceResult.raceResult.code)
+            onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    listener.onCodeSelect(currentRaceResult.raceResult, position)
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                }
+
             }
         }
 

@@ -21,7 +21,24 @@
             android:layout_gravity="center"
             android:hint="Boat Class *"
             android:textColorHint="#c5373d"
-            android:layout_marginVertical="10dp"/>
+            android:layout_marginVertical="10dp"
+            android:singleLine="true"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginVertical="10dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+            android:textColorHint="#c5373d">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etRating"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Rating *"
+                android:layout_gravity="center"
+                android:singleLine="true"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <AutoCompleteTextView
             android:id="@+id/sailNo"
@@ -32,84 +49,117 @@
             android:layout_gravity="center"
             android:hint="Sail Number *"
             android:textColorHint="#c5373d"
-            android:layout_marginVertical="10dp"/>
+            android:layout_marginVertical="10dp"
+            android:singleLine="true"/>
 
-        <com.google.android.material.textfield.TextInputLayout
+        <AutoCompleteTextView
+            android:id="@+id/tvHelm"
+            style="@style/Widget.Material3.AutoCompleteTextView.OutlinedBox"
+            android:background="#E6E0E9"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:hint="Helm"
+            android:textColorHint="@color/purple"
             android:layout_marginVertical="10dp"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-            android:textColorHint="@color/purple">
+            android:singleLine="true"/>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/helm"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Helm"
-                android:layout_gravity="center"
-                android:singleLine="true"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
+        <AutoCompleteTextView
+            android:id="@+id/tvCrew"
+            style="@style/Widget.Material3.AutoCompleteTextView.OutlinedBox"
+            android:background="#E6E0E9"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:hint="Crew"
+            android:textColorHint="@color/purple"
             android:layout_marginVertical="10dp"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-            android:textColorHint="@color/purple">
+            android:singleLine="true"/>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/crew"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Crew"
-                android:layout_gravity="center"
-                android:singleLine="true"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
+        <AutoCompleteTextView
+            android:id="@+id/tvClub"
+            style="@style/Widget.Material3.AutoCompleteTextView.OutlinedBox"
+            android:background="#E6E0E9"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:hint="Club"
+            android:textColorHint="@color/purple"
             android:layout_marginVertical="10dp"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-            android:textColorHint="@color/purple">
+            android:singleLine="true"/>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/club"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Club"
-                android:layout_gravity="center"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
+        <AutoCompleteTextView
+            android:id="@+id/tvFleet"
+            style="@style/Widget.Material3.AutoCompleteTextView.OutlinedBox"
+            android:background="#E6E0E9"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:hint="Fleet"
+            android:textColorHint="@color/purple"
             android:layout_marginVertical="10dp"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-            android:textColorHint="@color/purple">
+            android:singleLine="true"/>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/fleet"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Fleet"
-                android:layout_gravity="center"/>
-        </com.google.android.material.textfield.TextInputLayout>
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_marginVertical="10dp"-->
+<!--            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"-->
+<!--            android:textColorHint="@color/purple">-->
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginVertical="10dp"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-            android:textColorHint="@color/purple">
+<!--            <com.google.android.material.textfield.TextInputEditText-->
+<!--                android:id="@+id/helm"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:hint="Helm"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:singleLine="true"/>-->
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etRating"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Rating"
-                android:layout_gravity="center"
-                android:singleLine="true"/>
-        </com.google.android.material.textfield.TextInputLayout>
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_marginVertical="10dp"-->
+<!--            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"-->
+<!--            android:textColorHint="@color/purple">-->
+
+<!--            <com.google.android.material.textfield.TextInputEditText-->
+<!--                android:id="@+id/crew"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:hint="Crew"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:singleLine="true"/>-->
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
+
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_marginVertical="10dp"-->
+<!--            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"-->
+<!--            android:textColorHint="@color/purple">-->
+
+<!--            <com.google.android.material.textfield.TextInputEditText-->
+<!--                android:id="@+id/club"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:hint="Club"-->
+<!--                android:layout_gravity="center"/>-->
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
+
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_marginVertical="10dp"-->
+<!--            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"-->
+<!--            android:textColorHint="@color/purple">-->
+
+<!--            <com.google.android.material.textfield.TextInputEditText-->
+<!--                android:id="@+id/fleet"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:hint="Fleet"-->
+<!--                android:layout_gravity="center"/>-->
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
     </LinearLayout>
 </ScrollView>
