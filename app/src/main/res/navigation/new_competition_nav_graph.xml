@@ -59,5 +59,27 @@
         <argument
             android:name="series"
             app:argType="com.example.ezsail.db.entities.Series"/>
+        <action
+            android:id="@+id/action_seriesFragment_to_racePageEditingFragment"
+            app:destination="@id/racePageEditingFragment" />
+        <action
+            android:id="@+id/action_seriesFragment_to_overallPageEditingFragment"
+            app:destination="@id/overallPageEditingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/overallPageEditingFragment"
+        android:name="com.example.ezsail.ui.fragments.OverallPageEditingFragment"
+        android:label="OverallPageEditingFragment" >
+        <argument
+            android:name="boatInfoWithOverallResult"
+            app:argType="com.example.ezsail.db.entities.relations.OverallResultsWithBoatAndPYNumber" />
+    </fragment>
+    <fragment
+        android:id="@+id/racePageEditingFragment"
+        android:name="com.example.ezsail.ui.fragments.RacePageEditingFragment"
+        android:label="RacePageEditingFragment" >
+        <argument
+            android:name="boatInfoWithRaceResult"
+            app:argType="com.example.ezsail.db.entities.relations.RaceResultsWithBoatAndPYNumber" />
     </fragment>
 </navigation>

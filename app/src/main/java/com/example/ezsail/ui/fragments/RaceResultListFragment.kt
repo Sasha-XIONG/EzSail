@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ezsail.Constants.ACTION_START_SERVICE
 import com.example.ezsail.Constants.ACTION_STOP_SERVICE
@@ -17,27 +16,19 @@ import com.example.ezsail.services.TimingService
 import android.Manifest
 import android.app.Dialog
 import android.content.pm.PackageManager
-import android.graphics.drawable.ColorDrawable
-import android.util.Log
 import android.view.Window
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.ui.graphics.Color
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.commit
+import androidx.navigation.fragment.findNavController
 import com.example.ezsail.R
 import com.example.ezsail.db.entities.Race
 import com.example.ezsail.db.entities.RaceResult
-//import com.example.ezsail.db.entities.relations.RaceResultsWithBoat
 import com.example.ezsail.db.entities.relations.RaceResultsWithBoatAndPYNumber
 import com.example.ezsail.listeners.RaceResultEventListener
 import com.example.ezsail.ui.viewmodels.MainViewModel
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
 
 // Fragment shows view pager
 class RaceResultListFragment(race: Race):
@@ -121,11 +112,6 @@ class RaceResultListFragment(race: Race):
         raceResultBinding = null
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        Log.d("destroy frag", "yes")
-    }
-
     // Send intent to service
     private fun sendCommandToService(action: String) =
         Intent(requireContext(), TimingService::class.java).also {
@@ -183,7 +169,7 @@ class RaceResultListFragment(race: Race):
             it.forEach {
                 viewModel.insertRaceResult(
                     RaceResult(
-                        it.boat.sailNo,
+                        it.boatWithPYNumber.boat.sailNo,
                         race.raceNo,
                         it.overallResult.seriesId
                     ),
@@ -232,12 +218,13 @@ class RaceResultListFragment(race: Race):
         card.findViewById<TextView>(R.id.rating).text = raceResultsWithBoat.boatWithPYNumber.number.Number.toString()
         card.findViewById<TextView>(R.id.correctedTime).text = raceResultsWithBoat.raceResult.correctedTime.toString()
 
-        card.findViewById<Button>(R.id.deleteBtn).setOnClickListener {
-            Toast.makeText(context, "Result Deleted", Toast.LENGTH_SHORT).show()
-        }
+        card.findViewById<Button>(R.id.deleteBtn).visibility = View.GONE
 
         card.findViewById<Button>(R.id.editBtn).setOnClickListener {
-
+            val direction =
+                SeriesFragmentDirections.actionSeriesFragmentToRacePageEditingFragment(raceResultsWithBoat)
+            findNavController().navigate(direction)
+            card.hide()
         }
 
         card.show()

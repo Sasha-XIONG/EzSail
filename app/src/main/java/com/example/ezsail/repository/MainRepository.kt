@@ -6,7 +6,6 @@ import com.example.ezsail.db.entities.OverallResult
 import com.example.ezsail.db.entities.PYNumbers
 import com.example.ezsail.db.entities.Race
 import com.example.ezsail.db.entities.RaceResult
-//import com.example.ezsail.db.entities.RaceResult
 import com.example.ezsail.db.entities.Series
 import javax.inject.Inject
 
@@ -27,19 +26,13 @@ class MainRepository @Inject constructor(
 
     suspend fun upsertPYNumber(number: PYNumbers) = sailingDao.upsertPYNumber(number)
 
-    suspend fun deleteRaceResult(raceResult: RaceResult) = sailingDao.deleteRaceResult(raceResult)
-
     suspend fun deleteOverallResult(overallResult: OverallResult) = sailingDao.deleteOverallResult(overallResult)
 
-//    suspend fun insertRaceResult(raceResult: RaceResult) = sailingDao.insertRaceResult(raceResult)
-//
     fun getAllSeries() = sailingDao.getAllSeries()
 
     suspend fun getAllRacesBySeriesId(id: Int) = sailingDao.getAllRacesBySeriesId(id)
 
     fun searchSeries(query: String?) = sailingDao.searchSeriesByTitle(query)
-
-    fun getAllOverallResults() = sailingDao.getAllOverallResult()
 
     fun getAllBoatClass() = sailingDao.getAllBoatClass()
 
@@ -55,18 +48,8 @@ class MainRepository @Inject constructor(
 
     suspend fun deleteSeries(series: Series) = sailingDao.deleteSeries(series)
 
-//    suspend fun deleteRace(id: Int, raceNo: Int) = sailingDao.deleteRaceBySeriesIdAndRaceNo(id, raceNo)
     suspend fun deleteRace(race: Race) = sailingDao.deleteRace(race)
 
-    suspend fun getSeriesById(id: Int?) = sailingDao.getSeriesById(id)
-//
-//    suspend fun getResultByCompId(compId: Int) = sailingDao.getResultByCompId(compId)
-//
-//    suspend fun getBoatBySailNo(sailNo: String) = sailingDao.getBoatBySailNo(sailNo)
-//
-//    suspend fun deleteBoat(boat: Boat) = sailingDao.deleteBoat(boat)
-
-    //TEST!!
     fun getAllOverallResultsBySeriesId(id: Int) = sailingDao.getAllOverallResultsBySeriesId(id)
 
     fun getAllRaceResultsBySeriesIdAndRaceNo(id: Int, raceNo: Int) =
@@ -75,6 +58,9 @@ class MainRepository @Inject constructor(
     // Function for rescore
     suspend fun getRaceResultsListBySeriesIdAndRaceNo(id: Int, raceNo: Int) =
         sailingDao.getRaceResultsListBySeriesIdAndRaceNo(id, raceNo)
+
+    suspend fun getEntriesBySeriesId(id: Int) =
+        sailingDao.getEntriesBySeriesId(id)
 
     suspend fun getEntriesBySeriesIdAndRaceNo(id: Int, raceNo: Int) =
         sailingDao.getEntriesBySeriesIdAndRaceNo(id, raceNo)

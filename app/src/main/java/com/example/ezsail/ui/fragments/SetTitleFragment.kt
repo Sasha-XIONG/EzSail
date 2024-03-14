@@ -14,6 +14,7 @@ import com.example.ezsail.R
 import com.example.ezsail.databinding.FragmentSetTitleBinding
 import com.example.ezsail.db.entities.Series
 import com.example.ezsail.ui.viewmodels.MainViewModel
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -55,7 +56,7 @@ class SetTitleFragment: Fragment() {
 
             findNavController().navigate(R.id.action_setTitleFragment_to_allSeriesFragment)
         } else {
-            Toast.makeText(this.context, "Please enter series title", Toast.LENGTH_SHORT).show()
+            Snackbar.make(requireView(), "Please enter a title", Snackbar.LENGTH_SHORT).show()
         }
     }
 

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="320dp"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
@@ -24,17 +23,17 @@
 
     <TextView
         android:id="@+id/boatClass_content"
-        android:layout_width="wrap_content"
+        android:layout_width="170dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/robotomedium"
+        android:scrollHorizontally="true"
         android:text="420"
         android:textColor="@color/black"
         android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="@+id/sailNo_content"
-        app:layout_constraintTop_toTopOf="@+id/boatClass"
-        android:scrollHorizontally="true"
         android:ellipsize="end"
-        android:maxLines="1"/>
+        android:maxLines="1"
+        app:layout_constraintStart_toStartOf="@+id/sailNo_content"
+        app:layout_constraintTop_toTopOf="@+id/boatClass" />
 
     <TextView
         android:id="@+id/sailNo"
@@ -57,6 +56,8 @@
         android:fontFamily="@font/robotomedium"
         android:textSize="16sp"
         android:textColor="@color/black"
+        android:ellipsize="end"
+        android:maxLines="1"
         app:layout_constraintStart_toEndOf="@+id/sailNo"
         app:layout_constraintTop_toTopOf="@+id/sailNo" />
 
@@ -81,6 +82,8 @@
         android:fontFamily="@font/robotoregular"
         android:textSize="16sp"
         android:textColor="@color/black"
+        android:ellipsize="end"
+        android:maxLines="1"
         app:layout_constraintStart_toEndOf="@+id/helm"
         app:layout_constraintTop_toTopOf="@+id/helm" />
 
@@ -104,6 +107,8 @@
         android:text="Alex Cook"
         android:textColor="@color/black"
         android:textSize="16sp"
+        android:ellipsize="end"
+        android:maxLines="1"
         app:layout_constraintStart_toStartOf="@+id/helm_content"
         app:layout_constraintTop_toTopOf="@+id/textView9" />
 
@@ -127,6 +132,8 @@
         android:text="Bala"
         android:textColor="@color/black"
         android:textSize="16sp"
+        android:ellipsize="end"
+        android:maxLines="1"
         app:layout_constraintStart_toStartOf="@+id/helm_content"
         app:layout_constraintTop_toTopOf="@+id/textView11" />
 
@@ -150,6 +157,8 @@
         android:text="Handicap"
         android:textColor="@color/black"
         android:textSize="16sp"
+        android:ellipsize="end"
+        android:maxLines="1"
         app:layout_constraintStart_toStartOf="@+id/helm_content"
         app:layout_constraintTop_toTopOf="@+id/textView13" />
 
@@ -177,7 +186,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
     <TextView
-        android:id="@+id/textView17"
+        android:id="@+id/tv_correctedTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -197,8 +206,8 @@
         android:fontFamily="@font/robotoregular"
         android:textSize="16sp"
         android:textColor="@color/black"
-        app:layout_constraintStart_toEndOf="@+id/textView17"
-        app:layout_constraintTop_toTopOf="@+id/textView17" />
+        app:layout_constraintStart_toEndOf="@+id/tv_correctedTime"
+        app:layout_constraintTop_toTopOf="@+id/tv_correctedTime" />
 
     <Button
         android:id="@+id/editBtn"

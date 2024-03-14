@@ -6,7 +6,6 @@ import androidx.room.Relation
 import com.example.ezsail.db.entities.Boat
 import com.example.ezsail.db.entities.PYNumbers
 
-@Entity
 data class BoatWithPYNumber(
     @Embedded val boat: Boat,
     @Relation(

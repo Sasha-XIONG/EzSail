@@ -20,6 +20,7 @@ class RaceResultItemAdapter(listener: RaceResultEventListener, val race: Race, v
     RecyclerView.Adapter<RaceResultItemAdapter.RaceResultViewHolder>() {
 
     private val listener = listener
+
     // Adapter for spinner
     private val arrayAdapter = ArrayAdapter.createFromResource(
         context,

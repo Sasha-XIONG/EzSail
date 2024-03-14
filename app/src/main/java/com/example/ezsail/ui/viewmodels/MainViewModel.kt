@@ -1,7 +1,5 @@
 package com.example.ezsail.ui.viewmodels
 
-import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ezsail.db.entities.Boat
@@ -10,14 +8,11 @@ import com.example.ezsail.db.entities.PYNumbers
 import com.example.ezsail.db.entities.Race
 import com.example.ezsail.db.entities.RaceResult
 import com.example.ezsail.db.entities.Series
-import com.example.ezsail.db.entities.relations.RaceResultsWithBoatAndPYNumber
 import com.example.ezsail.repository.MainRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.math.ceil
-import kotlin.math.log
 import kotlin.math.round
 import kotlin.math.roundToInt
 
@@ -45,6 +40,7 @@ class MainViewModel @Inject constructor(
     }
 
     fun insertRaceResult(raceResult: RaceResult, isOngoing: Boolean) = viewModelScope.launch {
+        // Check if the race is ongoing
         if(isOngoing) {
             mainRepository.insertRaceResult(raceResult)
         } else {
@@ -61,11 +57,7 @@ class MainViewModel @Inject constructor(
         mainRepository.upsertPYNumber(number)
     }
 
-    fun deleteRaceResult(raceResult: RaceResult) = viewModelScope.launch {
-        mainRepository.deleteRaceResult(raceResult)
-    }
-
-    fun deleteBoatFromCurrentSeries(overallResult: OverallResult) = viewModelScope.launch {
+    fun deleteOverallResult(overallResult: OverallResult) = viewModelScope.launch {
         mainRepository.deleteOverallResult(overallResult)
     }
 
@@ -96,8 +88,6 @@ class MainViewModel @Inject constructor(
         mainRepository.deleteRace(race)
     }
 
-    fun getAllOverallResults() = mainRepository.getAllOverallResults()
-
     fun getAllOverallResultsOfCurrentSeries() =
         mainRepository.getAllOverallResultsBySeriesId(currentSeries.id)
 
@@ -105,45 +95,47 @@ class MainViewModel @Inject constructor(
         mainRepository.getAllRaceResultsBySeriesIdAndRaceNo(currentSeries.id, raceNo)
 
     // Functions for rescore
-    suspend fun getRaceResultsListOfCurrentSeriesAndCurrentRace(raceNo: Int) =
+    private suspend fun getRaceResultsListOfCurrentSeriesAndCurrentRace(raceNo: Int) =
         mainRepository.getRaceResultsListBySeriesIdAndRaceNo(currentSeries.id, raceNo)
 
-    suspend fun getEntriesOfRace(raceNo: Int) =
+    private suspend fun getEntriesOfSeries() =
+        mainRepository.getEntriesBySeriesId(currentSeries.id)
+
+    private suspend fun getEntriesOfRace(raceNo: Int) =
         mainRepository.getEntriesBySeriesIdAndRaceNo(currentSeries.id, raceNo)
 
-    suspend fun getMostLapsOfRace(raceNo: Int) =
+    private suspend fun getMostLapsOfRace(raceNo: Int) =
         mainRepository.getMostLapsBySeriesIdAndRaceNo(currentSeries.id, raceNo)
 
-    suspend fun getRankedRaceResults(raceNo: Int) =
+    private suspend fun getRankedRaceResults(raceNo: Int) =
         mainRepository.getRankedRaceResults(currentSeries.id, raceNo)
 
-    //TEST!!
-    suspend fun getDuplicatedCorrectedTimeList(raceNo: Int) =
+    private suspend fun getDuplicatedCorrectedTimeList(raceNo: Int) =
         mainRepository.getDuplicatedCorrectedTimeList(currentSeries.id, raceNo)
 
-    suspend fun setAveragePoint(raceNo: Int, ct: Float) =
+    private suspend fun setAveragePoint(raceNo: Int, ct: Float) =
         mainRepository.setAveragePoint(currentSeries.id, raceNo, ct)
 
-    suspend fun getAllOODBySeriesId() =
+    private suspend fun getAllOODBySeriesId() =
         mainRepository.getAllOODBySeriesId(currentSeries.id)
 
-    suspend fun updatePointsForOOD(sailNo: String) =
+    private suspend fun updatePointsForOOD(sailNo: String) =
         mainRepository.updatePointsForOOD(currentSeries.id, sailNo)
 
-    suspend fun getAllSailorsOfCurrentSeries() =
+    private suspend fun getAllSailorsOfCurrentSeries() =
         mainRepository.getAllSailorsBySeriesId(currentSeries.id)
 
-    suspend fun clearDiscardStateForAll() =
+    private suspend fun clearDiscardStateForAll() =
         mainRepository.clearDiscardStateForAll(currentSeries.id)
 
-    suspend fun discardHighestPoints(sailNo: String, discardRaces:Int) =
+    private suspend fun discardHighestPoints(sailNo: String, discardRaces:Int) =
         mainRepository.discardHighestPoints(currentSeries.id, sailNo, discardRaces)
 
-    suspend fun calculateNettOfSailor(sailNo: String) =
+    private suspend fun calculateNettOfSailor(sailNo: String) =
         mainRepository.calculateNettOfSailor(currentSeries.id, sailNo)
 
     fun rescore() = viewModelScope.launch{
-        val entriesOfSeries = currentSeries.participants
+        val entriesOfSeries = getEntriesOfSeries()
         val sailorList = getAllSailorsOfCurrentSeries()
         val numberOfRaces = getAllRacesOfSeries()?.size
 

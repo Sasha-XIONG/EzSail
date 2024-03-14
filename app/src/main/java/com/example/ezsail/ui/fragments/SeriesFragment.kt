@@ -78,7 +78,6 @@ class SeriesFragment: Fragment(R.layout.fragment_series) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("ftag", "$tag")
 
         currentSeries = args.series!!
         viewModel.currentSeries = currentSeries
@@ -169,6 +168,7 @@ class SeriesFragment: Fragment(R.layout.fragment_series) {
     // Enable to change title
     private fun setupTitleListener() {
         val title = requireActivity().findViewById<EditText>(R.id.title)
+        val oldTitle = title.text.toString()
 
         title.setOnFocusChangeListener {_, hasFocus ->
             if (hasFocus) {
@@ -181,6 +181,7 @@ class SeriesFragment: Fragment(R.layout.fragment_series) {
                     viewModel.upsertSeries(currentSeries)
                     Toast.makeText(context, "Title Changed ${currentSeries.id}", Toast.LENGTH_SHORT).show()
                 } else {
+                    currentSeries.title = oldTitle
                     Toast.makeText(context, "Title connot be empty", Toast.LENGTH_SHORT).show()
                 }
             }

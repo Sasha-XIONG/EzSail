@@ -25,8 +25,7 @@ class SeriesListAdapter(listener: AllSeriesEventListener):
     private val differCallback = object : DiffUtil.ItemCallback<Series>(){
         override fun areItemsTheSame(oldItem: Series, newItem: Series): Boolean {
             return oldItem.id == newItem.id &&
-                    oldItem.title == newItem.title &&
-                    oldItem.participants == newItem.participants
+                    oldItem.title == newItem.title
         }
 
         override fun areContentsTheSame(oldItem: Series, newItem: Series): Boolean {

@@ -1,45 +1,34 @@
 package com.example.ezsail.ui
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.text.Editable
-import android.text.TextWatcher
-import android.util.Log
 import android.view.View
-import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.core.os.postDelayed
-import androidx.fragment.app.commit
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.findNavController
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.example.ezsail.Constants.ACTION_SHOW_RECORD_FRAGMENT
 import com.example.ezsail.R
-import com.example.ezsail.databinding.ActivityNewCompetitionBinding
+import com.example.ezsail.databinding.ActivityMainBinding
 import com.example.ezsail.ui.fragments.AllSeriesFragmentDirections
 import com.example.ezsail.ui.viewmodels.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     // Dagger manages viewmodel factories
-    // TODO: correct view model needed
     private val viewModel: MainViewModel by viewModels()
 
-    private lateinit var binding: ActivityNewCompetitionBinding
+    private lateinit var binding: ActivityMainBinding
     lateinit var navHostFragment: NavHostFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityNewCompetitionBinding.inflate(layoutInflater)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         // Initialise fragment host
@@ -57,7 +46,8 @@ class MainActivity : AppCompatActivity() {
                     R.id.allSeriesFragment, R.id.homeFragment, R.id.setTitleFragment ->
                     {binding.toolbar.visibility = View.GONE
                         binding.bottomToolbar.visibility = View.GONE}
-                    R.id.addCompetitorFragment -> {binding.bottomToolbar.visibility = View.GONE}
+                    R.id.addCompetitorFragment, R.id.racePageEditingFragment, R.id.overallPageEditingFragment ->
+                    {binding.bottomToolbar.visibility = View.GONE}
                     else -> {binding.toolbar.visibility = View.VISIBLE
                     binding.bottomToolbar.visibility = View.VISIBLE}
                 }
@@ -71,7 +61,7 @@ class MainActivity : AppCompatActivity() {
                 binding.progressBar.visibility = View.GONE
             }, 2000)
 
-            Toast.makeText(this, "Results Rescored", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Results Rescoring...", Toast.LENGTH_SHORT).show()
         }
     }
 

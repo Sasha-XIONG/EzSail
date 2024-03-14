@@ -1,33 +1,27 @@
 package com.example.ezsail.ui.fragments
 
-import android.content.Intent
+import android.app.Dialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
+import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.ezsail.Constants
-import com.example.ezsail.OverallItem
 import com.example.ezsail.R
-import com.example.ezsail.TimingUtility
 import com.example.ezsail.adapter.OverallResultItemAdapter
-import com.example.ezsail.adapter.RaceResultItemAdapter
-import com.example.ezsail.adapter.SeriesListAdapter
-import com.example.ezsail.adapter.testAdapter
 import com.example.ezsail.databinding.FragmentOverallResultBinding
-import com.example.ezsail.db.entities.OverallResult
-import com.example.ezsail.services.TimingService
+import com.example.ezsail.db.entities.relations.OverallResultsWithBoatAndPYNumber
+import com.example.ezsail.listeners.OverallResultEventListener
 import com.example.ezsail.ui.viewmodels.MainViewModel
 
-class OverallResultListFragment: Fragment(R.layout.fragment_overall_result) {
-
-    lateinit var overallResult: OverallResult
+class OverallResultListFragment:
+    Fragment(R.layout.fragment_overall_result), OverallResultEventListener {
 
     // Initialise view binding
     private var overallResultsbinding: FragmentOverallResultBinding? = null
@@ -62,9 +56,6 @@ class OverallResultListFragment: Fragment(R.layout.fragment_overall_result) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Hide race time
-
-
         setupOverallResultRecyclerView()
 
         // Set onClickListener for add competitor button
@@ -74,17 +65,57 @@ class OverallResultListFragment: Fragment(R.layout.fragment_overall_result) {
     }
 
     private fun setupOverallResultRecyclerView() {
-        overallResultListAdapter = OverallResultItemAdapter()
+        overallResultListAdapter = OverallResultItemAdapter(this)
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(requireActivity())
             adapter = overallResultListAdapter
         }
 
         activity?.let {
-            viewModel.getAllOverallResultsOfCurrentSeries().observe(viewLifecycleOwner) {overallResult ->
-                overallResultListAdapter.differ.submitList(overallResult)
+            viewModel.getAllOverallResultsOfCurrentSeries().observe(viewLifecycleOwner) {
+                overallResultListAdapter.differ.submitList(it)
             }
         }
+    }
+
+    override fun onItemClick(overallResultsWithBoatAndPYNumber: OverallResultsWithBoatAndPYNumber) {
+        // Init information card
+        val card = Dialog(requireContext())
+        card.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        card.setCancelable(true)
+        card.setContentView(R.layout.information_card)
+
+        card.findViewById<TextView>(R.id.boatClass_content).text =
+            overallResultsWithBoatAndPYNumber.boatWithPYNumber.boat.boatClass
+        card.findViewById<TextView>(R.id.sailNo_content).text =
+            overallResultsWithBoatAndPYNumber.boatWithPYNumber.boat.sailNo
+        card.findViewById<TextView>(R.id.helm_content).text =
+            overallResultsWithBoatAndPYNumber.boatWithPYNumber.boat.helm
+        card.findViewById<TextView>(R.id.crew).text =
+            overallResultsWithBoatAndPYNumber.boatWithPYNumber.boat.crew
+        card.findViewById<TextView>(R.id.club).text =
+            overallResultsWithBoatAndPYNumber.boatWithPYNumber.boat.club
+        card.findViewById<TextView>(R.id.fleet).text =
+            overallResultsWithBoatAndPYNumber.boatWithPYNumber.boat.fleet
+        card.findViewById<TextView>(R.id.rating).text =
+            overallResultsWithBoatAndPYNumber.boatWithPYNumber.number.Number.toString()
+        card.findViewById<TextView>(R.id.tv_correctedTime).visibility = View.GONE
+        card.findViewById<TextView>(R.id.correctedTime).visibility = View.GONE
+
+        card.findViewById<Button>(R.id.deleteBtn).setOnClickListener {
+            viewModel.deleteOverallResult(overallResultsWithBoatAndPYNumber.overallResult)
+            Toast.makeText(context, "Boat deleted from series", Toast.LENGTH_SHORT).show()
+            card.hide()
+        }
+
+        card.findViewById<Button>(R.id.editBtn).setOnClickListener {
+            val direction =
+                SeriesFragmentDirections.actionSeriesFragmentToOverallPageEditingFragment(overallResultsWithBoatAndPYNumber)
+            findNavController().navigate(direction)
+            card.hide()
+        }
+
+        card.show()
     }
 
 }

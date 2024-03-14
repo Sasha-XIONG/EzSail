@@ -6,22 +6,25 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ezsail.databinding.ItemOverallResultBinding
-import com.example.ezsail.db.entities.relations.OverallResultsWithBoat
+import com.example.ezsail.db.entities.relations.OverallResultsWithBoatAndPYNumber
+import com.example.ezsail.listeners.OverallResultEventListener
 
 // Adapter for RecyclerView in the ViewPager
-class OverallResultItemAdapter():
+class OverallResultItemAdapter(listener: OverallResultEventListener):
     RecyclerView.Adapter<OverallResultItemAdapter.OverallResultViewHolder>() {
+
+    private val listener = listener
 
     class OverallResultViewHolder(val itemBinding: ItemOverallResultBinding):
         RecyclerView.ViewHolder(itemBinding.root)
 
-    private val differCallback = object : DiffUtil.ItemCallback<OverallResultsWithBoat>(){
-        override fun areItemsTheSame(oldItem: OverallResultsWithBoat, newItem: OverallResultsWithBoat): Boolean {
-            return oldItem.boat == newItem.boat &&
+    private val differCallback = object : DiffUtil.ItemCallback<OverallResultsWithBoatAndPYNumber>(){
+        override fun areItemsTheSame(oldItem: OverallResultsWithBoatAndPYNumber, newItem: OverallResultsWithBoatAndPYNumber): Boolean {
+            return oldItem.boatWithPYNumber == newItem.boatWithPYNumber &&
                     oldItem.overallResult == newItem.overallResult
         }
 
-        override fun areContentsTheSame(oldItem: OverallResultsWithBoat, newItem: OverallResultsWithBoat): Boolean {
+        override fun areContentsTheSame(oldItem: OverallResultsWithBoatAndPYNumber, newItem: OverallResultsWithBoatAndPYNumber): Boolean {
             return oldItem == newItem
         }
 
@@ -39,9 +42,13 @@ class OverallResultItemAdapter():
 
     override fun onBindViewHolder(holder: OverallResultViewHolder, position: Int) {
         val currentOverallResult = differ.currentList[position]
-        holder.itemBinding.sailNumber.text = currentOverallResult.boat.sailNo
-        holder.itemBinding.boatClass.text = currentOverallResult.boat.boatClass
+        holder.itemBinding.sailNumber.text = currentOverallResult.boatWithPYNumber.boat.sailNo
+        holder.itemBinding.boatClass.text = currentOverallResult.boatWithPYNumber.boat.boatClass
         holder.itemBinding.nett.text = currentOverallResult.overallResult.nett.toString()
-        holder.itemBinding.rank.text = null
+        holder.itemBinding.rank.text = (position+1).toString()
+
+        holder.itemView.setOnClickListener {
+            listener.onItemClick(currentOverallResult)
+        }
     }
 }

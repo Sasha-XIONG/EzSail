@@ -12,15 +12,11 @@ import androidx.room.Upsert
 import com.example.ezsail.db.entities.Boat
 import com.example.ezsail.db.entities.OverallResult
 import com.example.ezsail.db.entities.PYNumbers
-//import com.example.ezsail.db.entities.OverallResult
 import com.example.ezsail.db.entities.Race
 import com.example.ezsail.db.entities.RaceResult
-//import com.example.ezsail.db.entities.RaceResult
 import com.example.ezsail.db.entities.Series
-import com.example.ezsail.db.entities.relations.OverallResultsWithBoat
+import com.example.ezsail.db.entities.relations.OverallResultsWithBoatAndPYNumber
 import com.example.ezsail.db.entities.relations.RaceResultsWithBoatAndPYNumber
-
-//import com.example.ezsail.db.entities.relations.RaceResultsWithBoat
 
 @Dao
 interface SailingDao {
@@ -46,21 +42,33 @@ interface SailingDao {
     @Upsert
     suspend fun upsertPYNumber(number: PYNumbers)
 
-    @Delete
-    suspend fun deleteRaceResult(raceResult: RaceResult)
-
     @Query("SELECT * FROM series ORDER BY id DESC")
     fun getAllSeries(): LiveData<List<Series>>
 
     @Query("SELECT * FROM race WHERE seriesId = :id ORDER BY raceNo")
     suspend fun getAllRacesBySeriesId(id: Int): List<Race>?
 
-    @Query("SELECT * FROM overall_results ORDER BY nett")
-    fun getAllOverallResult(): LiveData<List<OverallResult>>
-
     @Query("SELECT * FROM series WHERE title LIKE :title")
     fun searchSeriesByTitle(title: String?): LiveData<List<Series>>
 
+    @Transaction
+    @Query("SELECT * FROM overall_results WHERE series_id = :id ORDER BY nett")
+    fun getAllOverallResultsBySeriesId(id: Int): LiveData<List<OverallResultsWithBoatAndPYNumber>>
+
+    @Transaction
+    @Query("SELECT * FROM RaceResult WHERE seriesId = :id AND raceNo = :raceNo ORDER BY points")
+    fun getAllRaceResultsBySeriesIdAndRaceNo(id: Int, raceNo: Int): LiveData<List<RaceResultsWithBoatAndPYNumber>>
+
+    @Delete
+    suspend fun deleteSeries(series: Series)
+
+    @Delete
+    suspend fun deleteRace(race: Race)
+
+    @Delete
+    suspend fun deleteOverallResult(overallResult: OverallResult)
+
+    // Functions used for auto-complete text field
     @Query("SELECT ClassName FROM PYNumbers")
     fun getAllBoatClass(): LiveData<List<String>>
 
@@ -79,30 +87,13 @@ interface SailingDao {
     @Query("SELECT helm FROM Boat UNION SELECT crew FROM Boat")
     fun getAllSailors(): LiveData<List<String>>
 
-    @Delete
-    suspend fun deleteSeries(series: Series)
-
-    @Delete
-    suspend fun deleteRace(race: Race)
-
-    @Delete
-    suspend fun deleteOverallResult(overallResult: OverallResult)
-
-    @Query("SELECT * FROM series WHERE id = :id")
-    suspend fun getSeriesById(id: Int?): Series?
-
-    @Transaction
-    @Query("SELECT * FROM overall_results WHERE series_id = :id")
-    fun getAllOverallResultsBySeriesId(id: Int): LiveData<List<OverallResultsWithBoat>>
-
-    @Transaction
-    @Query("SELECT * FROM RaceResult WHERE seriesId = :id AND raceNo = :raceNo")
-    fun getAllRaceResultsBySeriesIdAndRaceNo(id: Int, raceNo: Int): LiveData<List<RaceResultsWithBoatAndPYNumber>>
-
     // Functions for rescore
     @Transaction
     @Query("SELECT * FROM RaceResult WHERE seriesId = :id AND raceNo = :raceNo")
     suspend fun getRaceResultsListBySeriesIdAndRaceNo(id: Int, raceNo: Int): List<RaceResultsWithBoatAndPYNumber>
+
+    @Query("SELECT COUNT(*) FROM overall_results WHERE series_id = :id")
+    suspend fun getEntriesBySeriesId(id: Int): Int
 
     @Query("SELECT COUNT(sailNo) FROM RaceResult WHERE seriesId = :id AND raceNo = :raceNo AND code IN (0, 3, 4)")
     suspend fun getEntriesBySeriesIdAndRaceNo(id: Int, raceNo: Int): Int
