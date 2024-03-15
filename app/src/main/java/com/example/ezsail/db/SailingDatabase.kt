@@ -18,7 +18,7 @@ import com.example.ezsail.db.entities.Series
         RaceResult::class,
         PYNumbers::class
     ],
-    version = 2,
+    version = 1,
     exportSchema = false
 )
 abstract class SailingDatabase: RoomDatabase() {

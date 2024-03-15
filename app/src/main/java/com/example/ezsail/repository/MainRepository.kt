@@ -1,5 +1,6 @@
 package com.example.ezsail.repository
 
+import androidx.room.Query
 import com.example.ezsail.db.SailingDao
 import com.example.ezsail.db.entities.Boat
 import com.example.ezsail.db.entities.OverallResult
@@ -33,6 +34,9 @@ class MainRepository @Inject constructor(
     suspend fun getAllRacesBySeriesId(id: Int) = sailingDao.getAllRacesBySeriesId(id)
 
     fun searchSeries(query: String?) = sailingDao.searchSeriesByTitle(query)
+
+    fun searchBoatBySailNoAtOverallPage(query: String?, id: Int) =
+        sailingDao.searchBoatBySailNoAtOverallPage(query, id)
 
     fun getAllBoatClass() = sailingDao.getAllBoatClass()
 
@@ -81,6 +85,9 @@ class MainRepository @Inject constructor(
     suspend fun updatePointsForOOD(id: Int, sailNo: String) =
         sailingDao.updatePointsForOOD(id, sailNo)
 
+    suspend fun getAllOnGoingRacesBySeriesId(id: Int) =
+        sailingDao.getAllOnGoingRacesBySeriesId(id)
+
     suspend fun clearDiscardStateForAll(id: Int) =
         sailingDao.clearDiscardStateForAll(id)
 
@@ -92,4 +99,17 @@ class MainRepository @Inject constructor(
 
     suspend fun calculateNettOfSailor(id: Int, sailNo: String) =
         sailingDao.calculateNettOfSailor(id, sailNo)
+
+    // Function for publish
+    suspend fun getOverallResultsListBySeriesId(id: Int) =
+        sailingDao.getOverallResultsListBySeriesId(id)
+
+    suspend fun getRaceResultsListBySeriesIdOrderByNettAndRaceNo(id: Int) =
+        sailingDao.getRaceResultsListBySeriesIdOrderByNettAndRaceNo(id)
+
+    suspend fun getRaceResultsListBySeriesIdOrderByRaceNoAndPoints(id: Int) =
+        sailingDao.getRaceResultsListBySeriesIdOrderByRaceNoAndPoints(id)
+
+    suspend fun getAllCodeUsedBySeriesId(id: Int) =
+        sailingDao.getAllCodeUsedBySeriesId(id)
 }

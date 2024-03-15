@@ -9,8 +9,11 @@ import android.widget.SearchView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.ezsail.HTMLUtility
 import com.example.ezsail.R
 import com.example.ezsail.adapter.SeriesListAdapter
 import com.example.ezsail.databinding.FragmentAllSeriesBinding
@@ -18,6 +21,7 @@ import com.example.ezsail.db.entities.Series
 import com.example.ezsail.listeners.AllSeriesEventListener
 import com.example.ezsail.ui.viewmodels.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class AllSeriesFragment:
@@ -114,5 +118,13 @@ class AllSeriesFragment:
             }
             setNegativeButton("Cancel", null)
         }.create().show()
+    }
+
+    override fun onPublish(series: Series) {
+        viewLifecycleOwner.lifecycleScope.launch{
+            val html = viewModel.publish(series)
+            val direction = AllSeriesFragmentDirections.actionAllSeriesFragmentToWebViewFragment(html)
+            findNavController().navigate(direction)
+        }
     }
 }

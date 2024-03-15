@@ -52,6 +52,13 @@ interface SailingDao {
     fun searchSeriesByTitle(title: String?): LiveData<List<Series>>
 
     @Transaction
+    @Query("SELECT * FROM overall_results WHERE series_id = :id AND sail_number LIKE :sailNo")
+    fun searchBoatBySailNoAtOverallPage(sailNo: String?, id: Int): LiveData<List<OverallResultsWithBoatAndPYNumber>>
+
+//    @Query("SELECT * FROM RaceResult WHERE sailNo LIKE :sailNo")
+//    fun searchBoatBySailNoAtRacePage(sailNo: String?): LiveData<List<Series>>
+
+    @Transaction
     @Query("SELECT * FROM overall_results WHERE series_id = :id ORDER BY nett")
     fun getAllOverallResultsBySeriesId(id: Int): LiveData<List<OverallResultsWithBoatAndPYNumber>>
 
@@ -144,6 +151,9 @@ interface SailingDao {
             "WHERE seriesId = :id")
     suspend fun clearDiscardStateForAll(id: Int)
 
+    @Query("SELECT COUNT(*) FROM Race WHERE seriesId = :id AND is_ongoing = 0")
+    suspend fun getAllOnGoingRacesBySeriesId(id: Int): Int
+
     @Query("UPDATE RaceResult " +
             "SET isExcluded = 1 " +
             "WHERE seriesId = :id AND sailNo = :sailNo AND raceNo IN " +
@@ -160,4 +170,26 @@ interface SailingDao {
             "WHERE seriesId = :id AND sailNo = :sailNo AND isExcluded = 0)" +
             "WHERE series_id = :id AND sail_number = :sailNo")
     suspend fun calculateNettOfSailor(id: Int, sailNo: String)
+
+    // Function for publish
+    @Transaction
+    @Query("SELECT * FROM overall_results WHERE series_id = :id")
+    suspend fun getOverallResultsListBySeriesId(id: Int): List<OverallResultsWithBoatAndPYNumber>
+
+    @Transaction
+    @Query("SELECT * FROM RaceResult " +
+            "LEFT JOIN overall_results " +
+            "ON sailNo = sail_number " +
+            "WHERE seriesId = :id " +
+            "ORDER BY nett, raceNo")
+    suspend fun getRaceResultsListBySeriesIdOrderByNettAndRaceNo(id: Int): List<RaceResultsWithBoatAndPYNumber>
+
+    @Transaction
+    @Query("SELECT * FROM RaceResult " +
+            "WHERE seriesId = :id " +
+            "ORDER BY raceNo, points")
+    suspend fun getRaceResultsListBySeriesIdOrderByRaceNoAndPoints(id: Int): List<RaceResultsWithBoatAndPYNumber>
+
+    @Query("SELECT DISTINCT(code) FROM RaceResult WHERE seriesId = :id")
+    suspend fun getAllCodeUsedBySeriesId(id: Int): List<Int>
 }

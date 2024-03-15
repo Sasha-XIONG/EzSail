@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -32,21 +33,32 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         // Initialise fragment host
-        navHostFragment = supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
+        navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
 
         // Check whether it's launched by clicking on notification
         navigateToRaceFragment(intent)
 
         setSupportActionBar(binding.toolbar)
 
+        // Set onClickListener for back button
+        binding.toolbar.setNavigationOnClickListener {
+            navHostFragment.findNavController().popBackStack()
+        }
+
         // NavController is used to manage navigation between fragments
         navHostFragment.findNavController()
             .addOnDestinationChangedListener { _, destination, _ ->
                 when (destination.id) {
-                    R.id.allSeriesFragment, R.id.homeFragment, R.id.setTitleFragment ->
+                    R.id.allSeriesFragment,
+                    R.id.homeFragment,
+                    R.id.setTitleFragment,
+                    R.id.webViewFragment ->
                     {binding.toolbar.visibility = View.GONE
                         binding.bottomToolbar.visibility = View.GONE}
-                    R.id.addCompetitorFragment, R.id.racePageEditingFragment, R.id.overallPageEditingFragment ->
+                    R.id.addCompetitorFragment,
+                    R.id.racePageEditingFragment,
+                    R.id.overallPageEditingFragment ->
                     {binding.bottomToolbar.visibility = View.GONE}
                     else -> {binding.toolbar.visibility = View.VISIBLE
                     binding.bottomToolbar.visibility = View.VISIBLE}
@@ -76,10 +88,6 @@ class MainActivity : AppCompatActivity() {
         if (intent?.action == ACTION_SHOW_RECORD_FRAGMENT) {
             navHostFragment.findNavController().navigate(R.id.global_action_seriesFragment)
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
     }
 
     private fun refreshFragment() {

@@ -47,6 +47,10 @@ class SeriesListAdapter(listener: AllSeriesEventListener):
         val currentSeries = differ.currentList[position]
         holder.itemBinding.seriesTitle.text = currentSeries.title
 
+        holder.itemBinding.publishBtn.setOnClickListener {
+            listener.onPublish(currentSeries)
+        }
+
         holder.itemBinding.deleteBtn.setOnClickListener {
             listener.onDelete(currentSeries)
         }

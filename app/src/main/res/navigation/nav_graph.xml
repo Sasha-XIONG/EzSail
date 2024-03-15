@@ -37,6 +37,9 @@
         <action
             android:id="@+id/action_allSeriesFragment_to_setTitleFragment"
             app:destination="@id/setTitleFragment" />
+        <action
+            android:id="@+id/action_allSeriesFragment_to_webViewFragment"
+            app:destination="@id/webViewFragment" />
     </fragment>
     <fragment
         android:id="@+id/homeFragment"
@@ -81,5 +84,13 @@
         <argument
             android:name="boatInfoWithRaceResult"
             app:argType="com.example.ezsail.db.entities.relations.RaceResultsWithBoatAndPYNumber" />
+    </fragment>
+    <fragment
+        android:id="@+id/webViewFragment"
+        android:name="com.example.ezsail.ui.fragments.WebViewFragment"
+        android:label="WebViewFragment" >
+        <argument
+            android:name="html"
+            app:argType="string" />
     </fragment>
 </navigation>

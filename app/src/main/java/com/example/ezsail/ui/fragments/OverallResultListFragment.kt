@@ -118,4 +118,8 @@ class OverallResultListFragment:
         card.show()
     }
 
+    fun getAdapter(): OverallResultItemAdapter {
+        return overallResultListAdapter
+    }
+
 }

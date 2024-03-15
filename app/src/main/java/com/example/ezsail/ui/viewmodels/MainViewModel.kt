@@ -1,7 +1,12 @@
 package com.example.ezsail.ui.viewmodels
 
+import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.room.Query
+import com.example.ezsail.HTMLUtility
 import com.example.ezsail.db.entities.Boat
 import com.example.ezsail.db.entities.OverallResult
 import com.example.ezsail.db.entities.PYNumbers
@@ -13,6 +18,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.math.ceil
 import kotlin.math.round
 import kotlin.math.roundToInt
 
@@ -22,6 +28,7 @@ class MainViewModel @Inject constructor(
     val mainRepository: MainRepository
 ): ViewModel() {
     lateinit var currentSeries: Series
+    var position: Int = 0
 
     fun upsertBoat(boat: Boat) = viewModelScope.launch {
         mainRepository.upsertBoat(boat)
@@ -65,8 +72,11 @@ class MainViewModel @Inject constructor(
 
     fun searchSeries(query: String?) = mainRepository.searchSeries(query)
 
-    suspend fun getAllRacesOfSeries(): List<Race>? =
-        mainRepository.getAllRacesBySeriesId(currentSeries.id)
+    fun searchBoatBySailNoAtOverallPage(query: String?) =
+        mainRepository.searchBoatBySailNoAtOverallPage(query, currentSeries.id)
+
+    suspend fun getAllRacesOfSeries(id: Int): List<Race>? =
+        mainRepository.getAllRacesBySeriesId(id)
 
     fun getAllBoatClass() = mainRepository.getAllBoatClass()
 
@@ -98,8 +108,8 @@ class MainViewModel @Inject constructor(
     private suspend fun getRaceResultsListOfCurrentSeriesAndCurrentRace(raceNo: Int) =
         mainRepository.getRaceResultsListBySeriesIdAndRaceNo(currentSeries.id, raceNo)
 
-    private suspend fun getEntriesOfSeries() =
-        mainRepository.getEntriesBySeriesId(currentSeries.id)
+    private suspend fun getEntriesOfSeries(id: Int) =
+        mainRepository.getEntriesBySeriesId(id)
 
     private suspend fun getEntriesOfRace(raceNo: Int) =
         mainRepository.getEntriesBySeriesIdAndRaceNo(currentSeries.id, raceNo)
@@ -125,6 +135,9 @@ class MainViewModel @Inject constructor(
     private suspend fun getAllSailorsOfCurrentSeries() =
         mainRepository.getAllSailorsBySeriesId(currentSeries.id)
 
+    private suspend fun getAllOnGoingRacesOfSeries(id: Int) =
+        mainRepository.getAllOnGoingRacesBySeriesId(id)
+
     private suspend fun clearDiscardStateForAll() =
         mainRepository.clearDiscardStateForAll(currentSeries.id)
 
@@ -135,18 +148,18 @@ class MainViewModel @Inject constructor(
         mainRepository.calculateNettOfSailor(currentSeries.id, sailNo)
 
     fun rescore() = viewModelScope.launch{
-        val entriesOfSeries = getEntriesOfSeries()
+        val entriesOfSeries = getEntriesOfSeries(currentSeries.id)
         val sailorList = getAllSailorsOfCurrentSeries()
-        val numberOfRaces = getAllRacesOfSeries()?.size
+        val numberOfOnGoingRaces = getAllOnGoingRacesOfSeries(currentSeries.id)
 
-        // numberOfDiscardRaces = ROUNDUP(numberOfRaces/2)-1
+        // numberOfDiscardRaces = ROUNDUP(numberOfOnGoingRaces/2)-1
         // NOT NULL check
-        val numberOfDiscardRaces = (numberOfRaces?.div(2f))?.roundToInt()?.minus(1)
+        val numberOfDiscardRaces = ceil(numberOfOnGoingRaces/2f).toInt()-1
 
         // Set isExcluded to 0 for all race results
         clearDiscardStateForAll()
 
-        getAllRacesOfSeries()?.forEach {
+        getAllRacesOfSeries(currentSeries.id)?.forEach {
             val raceNo = it.raceNo
             val mostLaps = getMostLapsOfRace(raceNo)
 
@@ -215,8 +228,39 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    // Function generate htm file
-    fun publish()  = viewModelScope.launch {
+    // Function for publish
+    private suspend fun getOverallResultsListOfSeries(id: Int) =
+        mainRepository.getOverallResultsListBySeriesId(id)
 
+    private suspend fun getRaceResultsListOfSeriesOrderByNettAndRaceNo(id: Int) =
+        mainRepository.getRaceResultsListBySeriesIdOrderByNettAndRaceNo(id)
+
+    private suspend fun getRaceResultsListBySeriesIdOrderByRaceNoAndPoints(id: Int) =
+        mainRepository.getRaceResultsListBySeriesIdOrderByRaceNoAndPoints(id)
+
+    private suspend fun getAllCodeUsedOfSeries(id: Int) =
+        mainRepository.getAllCodeUsedBySeriesId(id)
+
+    // Function generate htm file
+    suspend fun publish(series: Series): String {
+        val numberOfOnGoingRaces = getAllOnGoingRacesOfSeries(series.id)
+        val entriesOfSeries = getEntriesOfSeries(series.id)
+        val sailedRaces = getAllRacesOfSeries(series.id)!!
+        val discardRaces = ceil(numberOfOnGoingRaces/2f).toInt()-1
+        val overallResultsList = getOverallResultsListOfSeries(series.id)
+        val raceResultsListOrderByNett = getRaceResultsListOfSeriesOrderByNettAndRaceNo(series.id)
+        val raceResultsListOrderByPoints = getRaceResultsListBySeriesIdOrderByRaceNoAndPoints(series.id)
+        val codeList = getAllCodeUsedOfSeries(series.id)
+
+        return HTMLUtility.generateHTMLFile(
+            series,
+            entriesOfSeries,
+            sailedRaces,
+            discardRaces,
+            overallResultsList,
+            raceResultsListOrderByNett,
+            raceResultsListOrderByPoints,
+            codeList
+        )
     }
 }

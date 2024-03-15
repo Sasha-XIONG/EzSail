@@ -1,11 +1,9 @@
 package com.example.ezsail
 
-import android.Manifest
-import android.content.Context
-import android.os.Build
 import android.util.Log
-import androidx.core.app.ActivityCompat.requestPermissions
-import com.example.ezsail.ui.MainActivity
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 import java.util.concurrent.TimeUnit
 
 object TimingUtility {
@@ -36,5 +34,13 @@ object TimingUtility {
         Log.d("format", "${str.toFloat()}")
 
         return str.toFloat()
+    }
+
+    fun getFormattedDate(timestamp: Long): String {
+        val calendar = Calendar.getInstance().apply {
+            timeInMillis = timestamp
+        }
+        val dateFormat = SimpleDateFormat("dd/MM/yy", Locale.getDefault())
+        return dateFormat.format(calendar.time)
     }
 }
