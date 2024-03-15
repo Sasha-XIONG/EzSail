@@ -50,4 +50,9 @@ class InputRaceResultFragment(
             viewModel.updateRaceResult(raceResult)
         }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        editResultBinding = null
+    }
 }

@@ -156,4 +156,9 @@ class InputInfoFragment(
             findNavController().popBackStack()
         }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        editBoatInfoBinding = null
+    }
 }

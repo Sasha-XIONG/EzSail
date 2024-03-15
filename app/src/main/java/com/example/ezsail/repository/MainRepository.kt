@@ -1,6 +1,5 @@
 package com.example.ezsail.repository
 
-import androidx.room.Query
 import com.example.ezsail.db.SailingDao
 import com.example.ezsail.db.entities.Boat
 import com.example.ezsail.db.entities.OverallResult

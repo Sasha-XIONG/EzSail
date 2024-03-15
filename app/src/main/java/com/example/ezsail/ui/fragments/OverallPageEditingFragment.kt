@@ -55,4 +55,9 @@ class OverallPageEditingFragment: Fragment(R.layout.fragment_overall_page_editin
             listener.onSaveClick(boatInfo)
         }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        editingBinding = null
+    }
 }

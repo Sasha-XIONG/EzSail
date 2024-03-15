@@ -18,6 +18,7 @@ import android.app.Dialog
 import android.content.pm.PackageManager
 import android.view.Window
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.SearchView
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
@@ -131,6 +132,7 @@ class RaceResultListFragment(race: Race):
             sendCommandToService(ACTION_STOP_SERVICE)
             binding.toggleBtn.visibility = View.GONE
             binding.timer.visibility = View.GONE
+            requireActivity().findViewById<LinearLayout>(R.id.bottomToolbar).visibility = View.VISIBLE
 
             // Update state of race
             race.is_ongoing = false
@@ -142,6 +144,7 @@ class RaceResultListFragment(race: Race):
             refreshFragment()
         } else {
             sendCommandToService(ACTION_START_SERVICE)
+            requireActivity().findViewById<LinearLayout>(R.id.bottomToolbar).visibility = View.GONE
         }
     }
 

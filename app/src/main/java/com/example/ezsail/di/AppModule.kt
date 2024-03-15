@@ -1,9 +1,12 @@
+/* This dependency injection part was inspired by:
+ The Running Tracker App,
+  Author: Philipp Lackner
+  Link: https://www.youtube.com/watch?v=ZjL-rpACPS0 */
+
 package com.example.ezsail.di
 
 import android.content.Context
 import androidx.room.Room
-import androidx.room.RoomDatabase
-import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.ezsail.Constants.SAILING_DATABASE_NAME
 import com.example.ezsail.db.SailingDatabase
 import dagger.Module
@@ -11,10 +14,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import java.util.concurrent.Executor
-import java.util.concurrent.Executors
 import javax.inject.Singleton
-import javax.security.auth.callback.Callback
 
 @Module
 @InstallIn(SingletonComponent::class)

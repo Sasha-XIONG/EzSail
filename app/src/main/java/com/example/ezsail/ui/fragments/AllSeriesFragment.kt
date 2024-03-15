@@ -11,6 +11,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
 import android.widget.Toast
+import androidx.activity.result.ActivityResultCallback
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -29,7 +32,6 @@ import kotlinx.coroutines.launch
 import java.io.FileOutputStream
 import java.io.IOException
 
-@Suppress("DEPRECATION")
 @AndroidEntryPoint
 class AllSeriesFragment:
     Fragment(R.layout.fragment_all_series),
@@ -37,7 +39,7 @@ class AllSeriesFragment:
     AllSeriesEventListener {
 
     private lateinit var html: String
-    lateinit var series: Series
+    private lateinit var resultLauncher: ActivityResultLauncher<String>
 
     // Set up view binding
     private var allSeriesBinding: FragmentAllSeriesBinding? = null
@@ -67,15 +69,17 @@ class AllSeriesFragment:
         binding.fab.setOnClickListener{
             findNavController().navigate(R.id.action_allSeriesFragment_to_setTitleFragment)
         }
-    }
 
-    // Called when return from the new intent
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        writeToFile(data?.data!!)
-        Toast.makeText(requireContext(), "File Saved", Toast.LENGTH_SHORT).show()
-        val direction = AllSeriesFragmentDirections.actionAllSeriesFragmentToWebViewFragment(html)
-        findNavController().navigate(direction)
+        // Init activity result launcher
+        // Called when return from new activity
+        resultLauncher = registerForActivityResult(ActivityResultContracts.CreateDocument()) {
+            it?.let {
+                writeToFile(it)
+                Toast.makeText(context, "File Saved", Toast.LENGTH_SHORT).show()
+                val direction = AllSeriesFragmentDirections.actionAllSeriesFragmentToWebViewFragment(html)
+                findNavController().navigate(direction)
+            }
+        }
     }
 
     private fun setupAllSeriesRecyclerView() {
@@ -86,8 +90,8 @@ class AllSeriesFragment:
         }
 
         activity?.let {
-            viewModel.getAllSeries().observe(viewLifecycleOwner) {series ->
-                seriesListAdapter.differ.submitList(series)
+            viewModel.getAllSeries().observe(viewLifecycleOwner) {
+                seriesListAdapter.differ.submitList(it)
             }
         }
     }
@@ -101,8 +105,8 @@ class AllSeriesFragment:
         // % indicates the query string can be in any place of the title
         val searchQuery = "%$title%"
 
-        viewModel.searchSeries(searchQuery).observe(this) { resultList ->
-            seriesListAdapter.differ.submitList(resultList)
+        viewModel.searchSeries(searchQuery).observe(this) {
+            seriesListAdapter.differ.submitList(it)
         }
     }
 
@@ -141,21 +145,8 @@ class AllSeriesFragment:
         viewLifecycleOwner.lifecycleScope.launch{
             // Get html file
             html = viewModel.publish(series)
-            delay(500)
             // Save html file
-            saveFile(series.title)
-//            val direction = AllSeriesFragmentDirections.actionAllSeriesFragmentToWebViewFragment(viewModel.html)
-//            findNavController().navigate(direction)
-        }
-    }
-
-    // Function to create an empty file
-    private fun saveFile(title: String) {
-        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
-        intent.apply {
-            type = "text/html"
-            putExtra(Intent.EXTRA_TITLE, "${title}.html")
-            startActivityForResult(this, 40)
+            resultLauncher.launch("result.html")
         }
     }
 

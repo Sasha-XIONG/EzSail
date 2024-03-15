@@ -2,13 +2,9 @@ package com.example.ezsail.di
 
 import android.app.PendingIntent
 import android.content.Context
-import android.content.Intent
-import android.content.pm.PackageManager
 import androidx.core.app.NotificationCompat
 import com.example.ezsail.Constants
-import com.example.ezsail.Constants.ACTION_SHOW_RECORD_FRAGMENT
 import com.example.ezsail.R
-import com.example.ezsail.ui.MainActivity
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

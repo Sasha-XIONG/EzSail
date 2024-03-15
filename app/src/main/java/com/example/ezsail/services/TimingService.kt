@@ -1,3 +1,8 @@
+/* This timing service part was inspired by:
+ The Running Tracker App,
+  Author: Philipp Lackner
+  Link: https://www.youtube.com/watch?v=LTUmtp7IDEg */
+
 package com.example.ezsail.services
 
 import android.app.NotificationChannel
@@ -6,7 +11,6 @@ import android.app.NotificationManager.IMPORTANCE_LOW
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.LifecycleService
@@ -16,13 +20,13 @@ import com.example.ezsail.Constants.ACTION_START_SERVICE
 import com.example.ezsail.Constants.NOTIFICATION_CHANNEL_ID
 import com.example.ezsail.Constants.NOTIFICATION_CHANNEL_NAME
 import com.example.ezsail.Constants.NOTIFICATION_ID
+import com.example.ezsail.Constants.TIMER_UPDATE_INTERVAL
+import com.example.ezsail.TimingUtility
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import com.example.ezsail.Constants.TIMER_UPDATE_INTERVAL
-import com.example.ezsail.TimingUtility
-import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -30,7 +34,7 @@ class TimingService: LifecycleService() {
 
     // Timestamp when we start the timer
     private var timeStarted = 0L
-    var serviceKilled = false
+    private var serviceKilled = false
 
     @Inject
     // Inject base notification builder, which holds configuration for current notification builder
@@ -76,7 +80,6 @@ class TimingService: LifecycleService() {
             if(it.action == ACTION_START_SERVICE) {
                 startForegroundService()
             } else {
-                Log.d("service", "stop")
                 killService()
             }
         }

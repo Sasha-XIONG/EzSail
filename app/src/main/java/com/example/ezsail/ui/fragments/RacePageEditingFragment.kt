@@ -74,4 +74,9 @@ class RacePageEditingFragment: Fragment(R.layout.fragment_race_page_editing) {
             raceResultListener.onSaveClick(boatInfoWithResult.raceResult)
         }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        editingBinding = null
+    }
 }

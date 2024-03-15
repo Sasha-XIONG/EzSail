@@ -6,7 +6,6 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import kotlinx.parcelize.Parcelize
 
-// BoatSeriesCrossRef
 @Entity(
     tableName = "overall_results",
     primaryKeys = ["sail_number", "series_id"],

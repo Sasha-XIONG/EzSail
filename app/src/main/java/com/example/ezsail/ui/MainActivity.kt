@@ -7,6 +7,8 @@ import android.os.Handler
 import android.os.Looper
 import android.view.View
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -17,6 +19,7 @@ import com.example.ezsail.Constants.ACTION_SHOW_RECORD_FRAGMENT
 import com.example.ezsail.R
 import com.example.ezsail.databinding.ActivityMainBinding
 import com.example.ezsail.db.entities.Series
+import com.example.ezsail.ui.fragments.AllSeriesFragment
 import com.example.ezsail.ui.fragments.AllSeriesFragmentDirections
 import com.example.ezsail.ui.fragments.SeriesFragmentDirections
 import com.example.ezsail.ui.viewmodels.MainViewModel
@@ -25,7 +28,6 @@ import kotlinx.coroutines.launch
 import java.io.FileOutputStream
 import java.io.IOException
 
-@Suppress("DEPRECATION")
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
@@ -33,6 +35,7 @@ class MainActivity : AppCompatActivity() {
     private val viewModel: MainViewModel by viewModels()
 
     private lateinit var html: String
+    private lateinit var resultLauncher: ActivityResultLauncher<String>
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var navHostFragment: NavHostFragment
@@ -50,6 +53,15 @@ class MainActivity : AppCompatActivity() {
         navigateToRaceFragment(intent)
 
         setSupportActionBar(binding.toolbar)
+
+        resultLauncher = registerForActivityResult(ActivityResultContracts.CreateDocument()) {
+            it?.let {
+                writeToFile(it)
+                Toast.makeText(this, "File Saved", Toast.LENGTH_SHORT).show()
+                val direction = SeriesFragmentDirections.actionSeriesFragmentToWebViewFragment(html)
+                navHostFragment.findNavController().navigate(direction)
+            }
+        }
 
         // Set onClickListener for back button
         binding.toolbar.setNavigationOnClickListener {
@@ -94,8 +106,7 @@ class MainActivity : AppCompatActivity() {
             lifecycleScope.launch{
                 val series = viewModel.currentSeries
                 html = viewModel.publish(series)
-                // Save html file
-                saveFile(series.title)
+                resultLauncher.launch("result.html")
             }
         }
     }
@@ -104,24 +115,6 @@ class MainActivity : AppCompatActivity() {
         super.onNewIntent(intent)
         // Check whether it's launched by clicking on notification
         navigateToRaceFragment(intent)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-//        html = viewModel.html
-//        if(resultCode != RESULT_CANCELED) {
-            // Write to file created
-//            writeToFile(data?.data!!)
-//            Toast.makeText(this, "File Saved", Toast.LENGTH_SHORT).show()
-            // Rrquest from child fragment
-//            direction = if (requestCode == 100) {
-//                frag.AllSeriesFragmentDirections.actionAllSeriesFragmentToWebViewFragment(html)
-//            } else {
-//                SeriesFragmentDirections.actionSeriesFragmentToWebViewFragment(html)
-//            }
-//            val direction = SeriesFragmentDirections.actionSeriesFragmentToWebViewFragment(html)
-//            navHostFragment.findNavController().navigate(direction)
-//        }
     }
 
     // Check if the activity is launched by clicking notification
@@ -138,16 +131,6 @@ class MainActivity : AppCompatActivity() {
         navController.popBackStack()
         val direction = AllSeriesFragmentDirections.actionAllSeriesFragmentToSeriesFragment(currentSeries)
         navController.navigate(direction)
-    }
-
-    // Function to create an empty file
-    private fun saveFile(title: String) {
-        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
-        intent.apply {
-            type = "text/html"
-            putExtra(Intent.EXTRA_TITLE, "${title}.html")
-            startActivityForResult(this, 40)
-        }
     }
 
     // Function to write html file to empty file

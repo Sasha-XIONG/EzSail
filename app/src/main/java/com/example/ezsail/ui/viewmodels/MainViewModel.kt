@@ -24,7 +24,6 @@ class MainViewModel @Inject constructor(
 ): ViewModel() {
     lateinit var currentSeries: Series
     var position: Int = 0
-    var html: String = ""
 
     fun upsertBoat(boat: Boat) = viewModelScope.launch {
         mainRepository.upsertBoat(boat)
@@ -251,17 +250,14 @@ class MainViewModel @Inject constructor(
         val raceResultsListOrderByPoints = getRaceResultsListBySeriesIdOrderByRaceNoAndPoints(series.id)
         val codeList = getAllCodeUsedOfSeries(series.id)
 
-        html =
-            HTMLUtility.generateHTMLFile(
-            series,
-            entriesOfSeries,
-            sailedRaces,
-            discardRaces,
-            overallResultsList,
-            raceResultsListOrderByNett,
-            raceResultsListOrderByPoints,
-            codeList
-        )
-        return html
+        return HTMLUtility.generateHTMLFile(
+                series,
+                entriesOfSeries,
+                sailedRaces,
+                discardRaces,
+                overallResultsList,
+                raceResultsListOrderByNett,
+                raceResultsListOrderByPoints,
+                codeList)
     }
 }
