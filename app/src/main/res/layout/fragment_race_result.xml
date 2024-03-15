@@ -1,119 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
+    <SearchView
+        android:id="@+id/searchView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/recyclerView"
+        android:layout_height="42dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/rounded_corner"
+        android:backgroundTint="#ECE6F0"
+        android:iconifiedByDefault="false"
+        android:queryHint="Input sail number here..."
+        app:layout_constraintBottom_toTopOf="@+id/cl"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:fontFamily="@font/poppinssemibold"
-            android:gravity="center"
-            android:text="Class"
-            android:textSize="16sp"
-            android:textColor="#1D1B20"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:fontFamily="@font/poppinssemibold"
-            android:gravity="center"
-            android:text="Sail No."
-            android:textSize="16sp"
-            android:textColor="#1D1B20"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:fontFamily="@font/poppinssemibold"
-            android:gravity="center"
-            android:text="Laps"
-            android:textSize="16sp"
-            android:textColor="#1D1B20"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:fontFamily="@font/poppinssemibold"
-            android:gravity="center"
-            android:text="Code"
-            android:textSize="16sp"
-            android:textColor="#1D1B20"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:fontFamily="@font/poppinssemibold"
-            android:gravity="center"
-            android:text="Timer"
-            android:textSize="16sp"
-            android:textColor="#1D1B20"/>
-
-        <TextView
-            android:id="@+id/pintv"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:fontFamily="@font/poppinssemibold"
-            android:text="Pin on top"
-            android:textSize="16sp"
-            android:textColor="#1D1B20"
-            android:gravity="center"/>
-    </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/rv_bg"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/searchView">
 
-    <TextView
-        android:id="@+id/timer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:background="#FEF7FF"
-        android:fontFamily="@font/poppinssemibold"
-        android:text="00:00"
-        android:textSize="25sp"
-        app:layout_constraintBottom_toTopOf="@+id/toggleBtn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintBottom_toTopOf="@+id/recyclerView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-    <Button
-        android:id="@+id/toggleBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="START!"
-        android:fontFamily="@font/poppinsbold"
-        android:textSize="15sp"
-        android:textColor="#1D1B20"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-        app:layout_constraintVertical_bias="0.823"
-        android:backgroundTint="#D4DDEC"
-        android:stateListAnimator="@null"
-        android:elevation="4dp"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:fontFamily="@font/poppinssemibold"
+                android:gravity="center"
+                android:text="Class"
+                android:textColor="#1D1B20"
+                android:textSize="16sp" />
 
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:fontFamily="@font/poppinssemibold"
+                android:gravity="center"
+                android:text="Sail No."
+                android:textColor="#1D1B20"
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:fontFamily="@font/poppinssemibold"
+                android:gravity="center"
+                android:text="Laps"
+                android:textColor="#1D1B20"
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:fontFamily="@font/poppinssemibold"
+                android:gravity="center"
+                android:text="Code"
+                android:textColor="#1D1B20"
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:fontFamily="@font/poppinssemibold"
+                android:gravity="center"
+                android:text="Timer"
+                android:textColor="#1D1B20"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/pintv"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:fontFamily="@font/poppinssemibold"
+                android:gravity="center"
+                android:text="Pin on top"
+                android:textColor="#1D1B20"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+        <TextView
+            android:id="@+id/timer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:background="#FEF7FF"
+            android:fontFamily="@font/poppinssemibold"
+            android:text="00:00"
+            android:textSize="25sp"
+            app:layout_constraintBottom_toTopOf="@+id/toggleBtn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/toggleBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#D4DDEC"
+            android:elevation="4dp"
+            android:fontFamily="@font/poppinsbold"
+            android:stateListAnimator="@null"
+            android:text="START!"
+            android:textColor="#1D1B20"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+            app:layout_constraintVertical_bias="0.823" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

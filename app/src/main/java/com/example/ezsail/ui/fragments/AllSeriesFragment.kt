@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -23,6 +24,7 @@ import com.example.ezsail.db.entities.Series
 import com.example.ezsail.listeners.AllSeriesEventListener
 import com.example.ezsail.ui.viewmodels.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.FileOutputStream
 import java.io.IOException
@@ -68,13 +70,10 @@ class AllSeriesFragment:
     }
 
     // Called when return from the new intent
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        // Write to file created
-        writeToFile(data?.data!!)
-        Toast.makeText(this.context, "File Saved", Toast.LENGTH_SHORT).show()
 
-        // Navigate to webview
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        writeToFile(data?.data!!)
+        Toast.makeText(requireContext(), "File Saved", Toast.LENGTH_SHORT).show()
         val direction = AllSeriesFragmentDirections.actionAllSeriesFragmentToWebViewFragment(html)
         findNavController().navigate(direction)
     }
@@ -115,7 +114,7 @@ class AllSeriesFragment:
     // Results show up as user typing
     override fun onQueryTextChange(newText: String?): Boolean {
         newText?.let {
-            searchSeries(newText)
+            searchSeries(it)
         }
         return true
     }
@@ -140,10 +139,13 @@ class AllSeriesFragment:
 
     override fun onPublish(series: Series) {
         viewLifecycleOwner.lifecycleScope.launch{
-            // Assign html
+            // Get html file
             html = viewModel.publish(series)
+            delay(500)
             // Save html file
             saveFile(series.title)
+//            val direction = AllSeriesFragmentDirections.actionAllSeriesFragmentToWebViewFragment(viewModel.html)
+//            findNavController().navigate(direction)
         }
     }
 

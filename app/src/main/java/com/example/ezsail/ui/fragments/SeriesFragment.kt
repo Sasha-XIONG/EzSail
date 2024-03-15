@@ -37,8 +37,7 @@ import java.util.Locale
 // Fragment shows navigation bar and view pager
 @AndroidEntryPoint
 class SeriesFragment:
-    Fragment(R.layout.fragment_series),
-    SearchView.OnQueryTextListener {
+    Fragment(R.layout.fragment_series){
 
     // Dagger manages viewmodel factories
     private val viewModel: MainViewModel by activityViewModels()
@@ -55,14 +54,12 @@ class SeriesFragment:
     private val viewPagerChangeCallback = object : ViewPager2.OnPageChangeCallback() {
         override fun onPageSelected(position: Int) {
             super.onPageSelected(position)
-
+            viewModel.position = position
             // Update race date as the page selected changing
             if (position == 0) {
                 requireActivity().findViewById<TextView>(R.id.tv_dateTitle).visibility = View.GONE
                 requireActivity().findViewById<TextView>(R.id.tv_raceDate).visibility = View.GONE
             } else {
-                // TODO: SETPOSITION
-//                viewModel.position = position
                 requireActivity().findViewById<TextView>(R.id.tv_dateTitle).visibility = View.VISIBLE
                 requireActivity().findViewById<TextView>(R.id.tv_raceDate).apply {
                     visibility = View.VISIBLE
@@ -132,36 +129,6 @@ class SeriesFragment:
             // Set current showing page
             binding.viewPager.setCurrentItem(mAdapter.itemCount, true)
         }
-    }
-
-    // Init search view
-    private fun setupSearchView() {
-        binding.searchView.isSubmitButtonEnabled = false
-        binding.searchView.setOnQueryTextListener(this)
-    }
-
-    private fun searchSeries(sailNo: String?) {
-        // % indicates the query string can be in any place of the title
-        val searchQuery = "%$sailNo%"
-
-        viewModel.searchBoatBySailNoAtOverallPage(searchQuery).observe(viewLifecycleOwner) {
-            val frag = mAdapter.getFragment(0) as OverallResultListFragment
-            val adapter = frag.getAdapter()
-            adapter.differ.submitList(it)
-        }
-    }
-
-    // Search by click on search button
-    override fun onQueryTextSubmit(query: String?): Boolean {
-        return false
-    }
-
-    // Results show up as user typing
-    override fun onQueryTextChange(newText: String?): Boolean {
-        newText?.let {
-            searchSeries(newText)
-        }
-        return true
     }
 
     override fun onDestroy() {

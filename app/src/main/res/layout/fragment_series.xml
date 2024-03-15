@@ -27,11 +27,11 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="10dp"
                 android:backgroundTint="@android:color/transparent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/addRaceBtn"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:tabMode="scrollable">
-            </com.google.android.material.tabs.TabLayout>
+                app:tabMode="scrollable"></com.google.android.material.tabs.TabLayout>
 
             <ImageButton
                 android:id="@+id/addRaceBtn"
@@ -51,24 +51,7 @@
             android:id="@+id/viewPager"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/searchView"
-            app:layout_constraintVertical_bias="1.0"
-            android:background="@drawable/rv_bg"/>
-
-        <SearchView
-            android:id="@+id/searchView"
-            android:layout_width="match_parent"
-            android:layout_height="42dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/rounded_corner"
-            android:backgroundTint="#ECE6F0"
-            android:iconifiedByDefault="false"
-            android:queryHint="Input sail number here..."
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"

@@ -55,8 +55,9 @@ interface SailingDao {
     @Query("SELECT * FROM overall_results WHERE series_id = :id AND sail_number LIKE :sailNo")
     fun searchBoatBySailNoAtOverallPage(sailNo: String?, id: Int): LiveData<List<OverallResultsWithBoatAndPYNumber>>
 
-//    @Query("SELECT * FROM RaceResult WHERE sailNo LIKE :sailNo")
-//    fun searchBoatBySailNoAtRacePage(sailNo: String?): LiveData<List<Series>>
+    @Transaction
+    @Query("SELECT * FROM RaceResult WHERE seriesId = :id AND raceNo = :raceNo AND sailNo LIKE :sailNo")
+    fun searchBoatBySailNoAtRacePage(sailNo: String?, id: Int, raceNo: Int): LiveData<List<RaceResultsWithBoatAndPYNumber>>
 
     @Transaction
     @Query("SELECT * FROM overall_results WHERE series_id = :id ORDER BY nett")
@@ -173,7 +174,7 @@ interface SailingDao {
 
     // Function for publish
     @Transaction
-    @Query("SELECT * FROM overall_results WHERE series_id = :id")
+    @Query("SELECT * FROM overall_results WHERE series_id = :id ORDER BY nett, sail_number")
     suspend fun getOverallResultsListBySeriesId(id: Int): List<OverallResultsWithBoatAndPYNumber>
 
     @Transaction
@@ -181,7 +182,7 @@ interface SailingDao {
             "LEFT JOIN overall_results " +
             "ON sailNo = sail_number " +
             "WHERE seriesId = :id " +
-            "ORDER BY nett, raceNo")
+            "ORDER BY nett, sailNo, raceNo")
     suspend fun getRaceResultsListBySeriesIdOrderByNettAndRaceNo(id: Int): List<RaceResultsWithBoatAndPYNumber>
 
     @Transaction

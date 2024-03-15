@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.Button
+import android.widget.SearchView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -21,7 +22,9 @@ import com.example.ezsail.listeners.OverallResultEventListener
 import com.example.ezsail.ui.viewmodels.MainViewModel
 
 class OverallResultListFragment:
-    Fragment(R.layout.fragment_overall_result), OverallResultEventListener {
+    Fragment(R.layout.fragment_overall_result),
+    OverallResultEventListener,
+    SearchView.OnQueryTextListener{
 
     // Initialise view binding
     private var overallResultsbinding: FragmentOverallResultBinding? = null
@@ -57,6 +60,8 @@ class OverallResultListFragment:
         super.onViewCreated(view, savedInstanceState)
 
         setupOverallResultRecyclerView()
+
+        setupSearchView()
 
         // Set onClickListener for add competitor button
         binding.addBtn.setOnClickListener {
@@ -118,8 +123,33 @@ class OverallResultListFragment:
         card.show()
     }
 
-    fun getAdapter(): OverallResultItemAdapter {
-        return overallResultListAdapter
+    private fun setupSearchView() {
+        binding.searchView.isSubmitButtonEnabled = false
+        binding.searchView.setOnQueryTextListener(this)
     }
 
+    private fun searchOverallResults(sailNo: String?) {
+        // % indicates the query string can be in any place of the title
+        val searchQuery = "%$sailNo%"
+
+        viewModel.searchBoatBySailNoAtOverallPage(searchQuery).observe(this) {
+            overallResultListAdapter.differ.submitList(it)
+        }
+    }
+
+    override fun onQueryTextSubmit(query: String?): Boolean {
+        return false
+    }
+
+    override fun onQueryTextChange(newText: String?): Boolean {
+        newText?.let {
+            searchOverallResults(it)
+        }
+        return true
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        overallResultsbinding = null
+    }
 }

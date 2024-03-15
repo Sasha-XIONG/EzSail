@@ -24,6 +24,7 @@ class MainViewModel @Inject constructor(
 ): ViewModel() {
     lateinit var currentSeries: Series
     var position: Int = 0
+    var html: String = ""
 
     fun upsertBoat(boat: Boat) = viewModelScope.launch {
         mainRepository.upsertBoat(boat)
@@ -69,6 +70,9 @@ class MainViewModel @Inject constructor(
 
     fun searchBoatBySailNoAtOverallPage(query: String?) =
         mainRepository.searchBoatBySailNoAtOverallPage(query, currentSeries.id)
+
+    fun searchBoatBySailNoAtRacePage(query: String?) =
+        mainRepository.searchBoatBySailNoAtRacePage(query, currentSeries.id, position)
 
     suspend fun getAllRacesOfSeries(id: Int): List<Race>? =
         mainRepository.getAllRacesBySeriesId(id)
@@ -247,7 +251,8 @@ class MainViewModel @Inject constructor(
         val raceResultsListOrderByPoints = getRaceResultsListBySeriesIdOrderByRaceNoAndPoints(series.id)
         val codeList = getAllCodeUsedOfSeries(series.id)
 
-        return HTMLUtility.generateHTMLFile(
+        html =
+            HTMLUtility.generateHTMLFile(
             series,
             entriesOfSeries,
             sailedRaces,
@@ -257,5 +262,6 @@ class MainViewModel @Inject constructor(
             raceResultsListOrderByPoints,
             codeList
         )
+        return html
     }
 }

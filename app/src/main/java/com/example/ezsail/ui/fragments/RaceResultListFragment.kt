@@ -18,6 +18,7 @@ import android.app.Dialog
 import android.content.pm.PackageManager
 import android.view.Window
 import android.widget.Button
+import android.widget.SearchView
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -32,7 +33,9 @@ import com.example.ezsail.ui.viewmodels.MainViewModel
 
 // Fragment shows view pager
 class RaceResultListFragment(race: Race):
-    Fragment(R.layout.fragment_race_result), RaceResultEventListener {
+    Fragment(R.layout.fragment_race_result),
+    RaceResultEventListener,
+    SearchView.OnQueryTextListener{
     // Initialise view binding
     private var raceResultBinding: FragmentRaceResultBinding? = null
     private val binding get() = raceResultBinding!!
@@ -102,6 +105,8 @@ class RaceResultListFragment(race: Race):
 
         // Setup adapter for recyclerview
         setupRaceResultRecyclerView()
+
+        setupSearchView()
 
         // Update timer in real time
         subscribeToObservers()
@@ -242,5 +247,30 @@ class RaceResultListFragment(race: Race):
     private fun refreshFragment() {
         binding.pintv.text = "Points"
         raceResultListAdapter.notifyDataSetChanged()
+    }
+
+    private fun setupSearchView() {
+        binding.searchView.isSubmitButtonEnabled = false
+        binding.searchView.setOnQueryTextListener(this)
+    }
+
+    private fun searchRaceResults(sailNo: String?) {
+        // % indicates the query string can be in any place of the title
+        val searchQuery = "%$sailNo%"
+
+        viewModel.searchBoatBySailNoAtRacePage(searchQuery).observe(this) {
+            raceResultListAdapter.differ.submitList(it)
+        }
+    }
+
+    override fun onQueryTextSubmit(query: String?): Boolean {
+        return false
+    }
+
+    override fun onQueryTextChange(newText: String?): Boolean {
+        newText?.let {
+            searchRaceResults(it)
+        }
+        return true
     }
 }

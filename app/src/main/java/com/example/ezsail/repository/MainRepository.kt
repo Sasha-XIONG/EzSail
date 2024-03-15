@@ -38,6 +38,9 @@ class MainRepository @Inject constructor(
     fun searchBoatBySailNoAtOverallPage(query: String?, id: Int) =
         sailingDao.searchBoatBySailNoAtOverallPage(query, id)
 
+    fun searchBoatBySailNoAtRacePage(query: String?, id: Int, raceNo: Int) =
+        sailingDao.searchBoatBySailNoAtRacePage(query, id, raceNo)
+
     fun getAllBoatClass() = sailingDao.getAllBoatClass()
 
     fun getAllSailNo() = sailingDao.getAllSailNo()
