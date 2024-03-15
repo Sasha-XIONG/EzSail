@@ -21,7 +21,8 @@
             android:hint="Boat Class *"
             android:textColorHint="#c5373d"
             android:layout_marginVertical="10dp"
-            android:maxLines="1"/>
+            android:maxLines="1"
+            android:inputType="text"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
@@ -36,7 +37,8 @@
                 android:layout_height="wrap_content"
                 android:hint="Rating *"
                 android:layout_gravity="center"
-                android:maxLines="1"/>
+                android:maxLines="1"
+                android:inputType="text"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <AutoCompleteTextView
@@ -49,7 +51,8 @@
             android:hint="Sail Number *"
             android:textColorHint="#c5373d"
             android:layout_marginVertical="10dp"
-            android:maxLines="1"/>
+            android:maxLines="1"
+            android:inputType="text"/>
 
         <AutoCompleteTextView
             android:id="@+id/tvHelm"
@@ -61,7 +64,8 @@
             android:hint="Helm"
             android:textColorHint="@color/purple"
             android:layout_marginVertical="10dp"
-            android:maxLines="1"/>
+            android:maxLines="1"
+            android:inputType="text"/>
 
         <AutoCompleteTextView
             android:id="@+id/tvCrew"
@@ -73,7 +77,8 @@
             android:hint="Crew"
             android:textColorHint="@color/purple"
             android:layout_marginVertical="10dp"
-            android:maxLines="1"/>
+            android:maxLines="1"
+            android:inputType="text"/>
 
         <AutoCompleteTextView
             android:id="@+id/tvClub"
@@ -85,7 +90,8 @@
             android:hint="Club"
             android:textColorHint="@color/purple"
             android:layout_marginVertical="10dp"
-            android:maxLines="1"/>
+            android:maxLines="1"
+            android:inputType="text"/>
 
         <AutoCompleteTextView
             android:id="@+id/tvFleet"
@@ -97,6 +103,7 @@
             android:hint="Fleet"
             android:textColorHint="@color/purple"
             android:layout_marginVertical="10dp"
-            android:maxLines="1"/>
+            android:maxLines="1"
+            android:inputType="text"/>
     </LinearLayout>
 </ScrollView>

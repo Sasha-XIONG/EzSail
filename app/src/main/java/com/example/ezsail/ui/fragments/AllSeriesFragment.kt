@@ -1,7 +1,11 @@
 package com.example.ezsail.ui.fragments
 
 import android.app.AlertDialog
+import android.content.Intent
+import android.health.connect.datatypes.units.Length
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,10 +14,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.ezsail.HTMLUtility
 import com.example.ezsail.R
 import com.example.ezsail.adapter.SeriesListAdapter
 import com.example.ezsail.databinding.FragmentAllSeriesBinding
@@ -22,13 +24,17 @@ import com.example.ezsail.listeners.AllSeriesEventListener
 import com.example.ezsail.ui.viewmodels.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import java.io.FileOutputStream
+import java.io.IOException
 
+@Suppress("DEPRECATION")
 @AndroidEntryPoint
 class AllSeriesFragment:
     Fragment(R.layout.fragment_all_series),
     SearchView.OnQueryTextListener,
     AllSeriesEventListener {
 
+    private lateinit var html: String
     lateinit var series: Series
 
     // Set up view binding
@@ -59,6 +65,18 @@ class AllSeriesFragment:
         binding.fab.setOnClickListener{
             findNavController().navigate(R.id.action_allSeriesFragment_to_setTitleFragment)
         }
+    }
+
+    // Called when return from the new intent
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        // Write to file created
+        writeToFile(data?.data!!)
+        Toast.makeText(this.context, "File Saved", Toast.LENGTH_SHORT).show()
+
+        // Navigate to webview
+        val direction = AllSeriesFragmentDirections.actionAllSeriesFragmentToWebViewFragment(html)
+        findNavController().navigate(direction)
     }
 
     private fun setupAllSeriesRecyclerView() {
@@ -122,9 +140,33 @@ class AllSeriesFragment:
 
     override fun onPublish(series: Series) {
         viewLifecycleOwner.lifecycleScope.launch{
-            val html = viewModel.publish(series)
-            val direction = AllSeriesFragmentDirections.actionAllSeriesFragmentToWebViewFragment(html)
-            findNavController().navigate(direction)
+            // Assign html
+            html = viewModel.publish(series)
+            // Save html file
+            saveFile(series.title)
+        }
+    }
+
+    // Function to create an empty file
+    private fun saveFile(title: String) {
+        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
+        intent.apply {
+            type = "text/html"
+            putExtra(Intent.EXTRA_TITLE, "${title}.html")
+            startActivityForResult(this, 40)
+        }
+    }
+
+    // Function to write html file to empty file
+    private fun writeToFile(uri: Uri)  {
+        try {
+            val pfd = requireContext().contentResolver.openFileDescriptor(uri, "w")
+            val fos = FileOutputStream(pfd?.fileDescriptor)
+            fos.write(html.toByteArray())
+            fos.close()
+            pfd?.close()
+        } catch (e: IOException) {
+            e.printStackTrace()
         }
     }
 }

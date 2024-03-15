@@ -1,11 +1,7 @@
 package com.example.ezsail.ui.viewmodels
 
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.room.Query
 import com.example.ezsail.HTMLUtility
 import com.example.ezsail.db.entities.Boat
 import com.example.ezsail.db.entities.OverallResult
@@ -20,7 +16,6 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.math.ceil
 import kotlin.math.round
-import kotlin.math.roundToInt
 
 @HiltViewModel
 class MainViewModel @Inject constructor(

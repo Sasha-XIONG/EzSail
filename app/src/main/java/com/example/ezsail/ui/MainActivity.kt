@@ -75,6 +75,10 @@ class MainActivity : AppCompatActivity() {
 
             Toast.makeText(this, "Results Rescoring...", Toast.LENGTH_SHORT).show()
         }
+
+        binding.scanBtn.setOnClickListener {
+            Toast.makeText(this, "Coming soon...", Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onNewIntent(intent: Intent?) {

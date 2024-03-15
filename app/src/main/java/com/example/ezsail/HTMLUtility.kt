@@ -28,7 +28,7 @@ object HTMLUtility {
                 "<html>" +
                 "<head>" +
                 "<meta charset=\"utf-8\">" +
-                "<title>Hello World</title>" +
+                "<title>Sailing results for ${series.title}</title>" +
                 // CSS style sheet from SailWave
                 "<style type=\"text/css\">" +
                 "body {font: 72% arial, helvetica, sans-serif; text-align: center;}" +
@@ -120,7 +120,6 @@ object HTMLUtility {
         // Overall Table Starts
         // Add overall result data for each sailor
         overallResultsList.forEach {
-            // TODO: CHECK ODD OR EVEN
             html += "<tr class=\"" +
                     (if (overallResultsList.indexOf(it)%2 == 0) {
                         "even summaryrow"
@@ -171,6 +170,7 @@ object HTMLUtility {
         // Race Table Starts
         // Add race table for each race
         sailedRaces.forEach {
+            var colorIndicator = 1
             html += "<h3 class=\"racetitle\" id=\"r${it.raceNo}\">R${it.raceNo}" +
                     "&nbsp;-&nbsp;${TimingUtility.getFormattedDate(it.timestamp)}</h3>" +
                     "<div class=\"caption racecaption\">" +
@@ -209,7 +209,7 @@ object HTMLUtility {
                 // Check if the code is DNC(1)
                 if (code != 1) {
                     html += "<tr class = \"" +
-                            (if ((i+1)%2 == 0) {
+                            (if (colorIndicator%2 == 0) {
                                 "even racerow"
                             } else {"odd racerow"}) +
                             "\">" +
@@ -231,6 +231,7 @@ object HTMLUtility {
                             "<td>${raceResult.raceResult.correctedTime}</td>" +
                             "<td>${raceResult.raceResult.points}</td>" +
                             "</tr>"
+                    colorIndicator += 1
                 }
             }
             // Update raceListPosition to get next sailor's race results
@@ -252,7 +253,7 @@ object HTMLUtility {
                 "</tr>"
         codeList.forEach {
             val trClass =
-                if ((codeList.indexOf(it)+1)%2 == 0) {"even coderow"} else {"odd coderow"}
+                if ((codeList.indexOf(it)%2) == 0) {"even coderow"} else {"odd coderow"}
             when(it) {
                 // DNC
                 1 -> {
@@ -297,18 +298,4 @@ object HTMLUtility {
 
         return html
     }
-
-//
-//    fun saveHTMLFile() {
-//        val path = Environment.getExternalStorageDirectory().path
-//        var fileName  = "test"
-//        fileName = fileName+".html"
-//        val file = File(path, fileName)
-//        val html = generateHTMLFile()
-//
-//        try {
-//            val out = FileOutputStream(file)
-//            val data = html
-//        }
-//
 }
